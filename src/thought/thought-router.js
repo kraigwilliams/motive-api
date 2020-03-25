@@ -61,6 +61,40 @@ thoughtRouter
     }
   })
 
+  .post(jsonBodyParser, async(req, res, next) => {
+    try{
+  const { thought_title, thought_content } = req.body;
+  const newThought = { thought_title, thought_content };
+
+  for (const [key, value] of Object.entries(newThought)) {
+    if (value == null) {
+      return res.status(400).json({
+        error: { message: `Missing '${key}' in request body` }
+      });
+    }
+  }
+  //newTopic.user_id = req.user.id;
+
+  const thought = await ThoughtService.insertThought(req.app.get("db"), newThought)
+  
+  
+  
+  
+      res
+        .status(201)
+       .location(path.posix.join(req.originalUrl, `/${thought.id}`))
+
+        .json(serializeThought(thought));
+    
+
+    }
+    catch(error){
+      next(error)
+    }
+    
+});
+
+
 thoughtRouter
 .route('/:thoughtId')
   .get( async (req, res, next) => {
