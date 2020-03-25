@@ -8,7 +8,7 @@ const errorHandler = require('./middleware/error-handler')
 const authRouter = require('./auth/auth-router')
 const userRouter= require('./user/user-router')
 
-//const topicRouter= require('./topic/topic-router')
+const topicRouter= require('./topic/topic-router')
 //const thoughtRouter= require('./topic/thought-router')
 
 const app = express()
@@ -21,7 +21,7 @@ app.use(helmet())
 app.use(cors())
 
 app.use('/api/auth', authRouter)
-//app.use('/api/topic', topicRouter)
+app.use('/api/topic', topicRouter)
 //app.use('/api/thought', thoughtRouter)
 app.use('/api/user', userRouter)
 
