@@ -61,6 +61,41 @@ topicRouter
     }
   })
 
+  .post(jsonBodyParser, async(req, res, next) => {
+      try{
+    const { topic_title, topic_content } = req.body;
+    const newTopic = { topic_title, topic_content };
+
+    for (const [key, value] of Object.entries(newTopic)) {
+      if (value == null) {
+        return res.status(400).json({
+          error: { message: `Missing '${key}' in request body` }
+        });
+      }
+    }
+    //newTopic.user_id = req.user.id;
+
+    const topic = await TopicService.insertTopic(req.app.get("db"), newTopic)
+    
+    
+    
+    
+        res
+          .status(201)
+          .location(path.posix.join(req.originalUrl, `/${topic.id}`))
+
+          .json(serializeTopic(topic));
+      
+
+      }
+      catch(error){
+        next(error)
+      }
+      
+  });
+
+
+
 topicRouter
 .route('/:topicId')
   .get( async (req, res, next) => {
