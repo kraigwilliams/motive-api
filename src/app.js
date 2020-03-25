@@ -3,6 +3,11 @@ const express = require('express')
 const cors = require('cors');
 const helmet = require('helmet')
 const morgan = require('morgan')
+const { CLIENT_ORIGIN, NODE_ENV } = require('./config')
+const errorHandler = require('./middleware/error-handler')
+const authRouter = require('./auth/auth-router')
+const topicRouter= require('./topic/topic-router')
+const thoughtRouter= require('./topic/thought-router')
 
 const app = express()
 const { NODE_ENV } = require('./config')
@@ -13,19 +18,15 @@ app.use(morgan(morganOption))
 app.use(helmet())
 app.use(cors())
 
-app.get('/',(req,res)=>{
-res.status(200).send("Hello World.")
-})
+app.use('/api/auth', authRouter)
+app.use('/api/topic', topicRouter)
+app.use('/api/thought', thoughtRouter)
+app.use('/api/user', userRouter)
 
-app.use(function erroHandler(error, req,res,next){
- let response
- if( NODE_ENV === 'production'){
-     response ={error:{message:'server error'}}
- }
- else {
-     console.error(error)
-     response = {message: error.message, error}
- }   
-})
+// app.get('/',(req,res)=>{
+// res.status(200).send("Hello World.")
+// })
+
+app.use(errorHandler)
 
 module.exports = app;
