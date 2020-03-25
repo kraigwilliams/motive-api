@@ -7,7 +7,7 @@ const jsonBodyParser = express.json()
 
 userRouter
   .post('/', jsonBodyParser, async (req, res, next) => {
-    const { password, username, name } = req.body
+    const { password, username, } = req.body
 
     for (const field of ['name', 'username', 'password'])
       if (!req.body[field])
@@ -42,11 +42,7 @@ userRouter
         newUser
       )
 
-      await UserService.populateUserWords(
-        req.app.get('db'),
-        user.id
-      )
-
+      
       res
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${user.id}`))
