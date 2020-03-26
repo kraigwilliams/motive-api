@@ -12,8 +12,8 @@ return knex
 .returning("*")
     },
 
-    getById(knex,id){
-        return knex.from('topic').select('topic.*').where('id', id)
+    getById(knex,topicId){
+        return knex.from('topic').select('topic.*').where('id', topicId)
     },
     
     deleteTopic(knex,topicId){
