@@ -76,6 +76,7 @@ thoughtRouter
         req.app.get("db"),
         newThought
       );
+      
 console.log("thought",thought)
       res
         .status(201)
