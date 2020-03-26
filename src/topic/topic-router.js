@@ -13,7 +13,7 @@ const serializeTopic = topic => ({
     id: Number(topic.id),
     topic_title: xss(topic.topic_title),
     topic_content: xss(topic.topic_content),
-    
+    topic_owner:Number(topic.topic_owner)
      
   });
 
@@ -44,7 +44,7 @@ topicRouter
 .route('/')
   .get( async (req, res, next) => {
       const knexInstance= req.app.get('db')
-      const user=req.user.id
+      const userId=req.user.id
       console.log("user id", req.user.id)
     try {
       const topics = await TopicService.getAllTopics(knexInstance,Number(req.user.id))
