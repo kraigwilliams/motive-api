@@ -1,25 +1,20 @@
-const express = require('express')
-const path= require("path");
-const xss = require("xss")
-const ThoughtService = require('./thought-service')
-const { requireAuth } = require('../middleware/jwt-auth')
+const express = require("express");
+const path = require("path");
+const xss = require("xss");
+const ThoughtService = require("./thought-service");
+const { requireAuth } = require("../middleware/jwt-auth");
 
+const thoughtRouter = express.Router();
 
-const thoughtRouter = express.Router()
-
-const jsonBodyParser = express.json()
+const jsonBodyParser = express.json();
 
 const serializeThought = thought => ({
-    id: Number(thought.id),
-    thought_title: xss(thought.thought_title),
-    thought_content: xss(thought.thought_content)
-    
-     
-  });
+  id: Number(thought.id),
+  thought_title: xss(thought.thought_title),
+  thought_content: xss(thought.thought_content)
+});
 
-
-thoughtRouter
-  .use(requireAuth)
+thoughtRouter.use(requireAuth);
 
 //   .use(async (req, res, next) => {
 //     try {
@@ -41,73 +36,57 @@ thoughtRouter
 //   })
 
 thoughtRouter
-.route('/')
-  .get( async (req, res, next) => {
-      const knexInstance= req.app.get('db')
-      const user=req.user.id
-      console.log("user id", req.user.id)
+  .route("/")
+  .get(async (req, res, next) => {
+    const knexInstance = req.app.get("db");
+    const user = req.user.id;
+    console.log("user id", req.user.id);
     try {
-      const thoughts = await ThoughtService.getAllThoughts(knexInstance,Number(req.user.id))
-     
-      
+      const thoughts = await ThoughtService.getAllThoughts(
+        knexInstance,
+        Number(req.user.id)
+      );
 
-
-      res.json(thoughts.map(serializeThought))
-        
-      
-    } 
-    catch (error) {
-      next(error)
+      res.json(thoughts.map(serializeThought));
+    } catch (error) {
+      next(error);
     }
   })
 
-  .post(jsonBodyParser, async(req, res, next) => {
-    try{
-  const { thought_title, thought_content } = req.body;
-  const newThought = { thought_title, thought_content };
+  .post(jsonBodyParser, async (req, res, next) => {
+    try {
+      const { thought_title, thought_content } = req.body;
+      const newThought = { thought_title, thought_content };
 
-  for (const [key, value] of Object.entries(newThought)) {
-    if (value == null) {
-      return res.status(400).json({
-        error: { message: `Missing '${key}' in request body` }
-      });
-    }
-  }
-  //newTopic.user_id = req.user.id;
+      for (const [key, value] of Object.entries(newThought)) {
+        if (value == null) {
+          return res.status(400).json({
+            error: { message: `Missing '${key}' in request body` }
+          });
+        }
+      }
+      newThought.thought_owner = req.user.id;
 
-  const thought = await ThoughtService.insertThought(req.app.get("db"), newThought)
-  
-  
-  
-  
+      const thought = await ThoughtService.insertThought(
+        req.app.get("db"),
+        newThought
+      );
+
       res
         .status(201)
-       .location(path.posix.join(req.originalUrl, `/${thought.id}`))
+        .location(path.posix.join(req.originalUrl, `/${thought.id}`))
 
         .json(serializeThought(thought));
-    
+    } catch (error) {
+      next(error);
+    }
+  });
 
-    }
-    catch(error){
-      next(error)
-    }
-    
+thoughtRouter.route("/:thoughtId").get(async (req, res, next) => {
+  try {
+  } catch (error) {
+    next(error);
+  }
 });
 
-
-thoughtRouter
-.route('/:thoughtId')
-  .get( async (req, res, next) => {
-    
-    try {
-    
-    } catch(error) {
-      next(error)
-    }
-    
-
-    
-  })
-
-
-module.exports = thoughtRouter
+module.exports = thoughtRouter;

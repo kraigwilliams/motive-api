@@ -1,7 +1,7 @@
 const ThoughtService= {
     getAllThoughts(knex,id){
         return knex.from('thought').select('*')
-        // .where('user_id',id)
+        .where('user_id',id)
     },
     
     insertThought(knex, newThought){
