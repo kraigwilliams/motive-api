@@ -40,7 +40,7 @@ thoughtRouter
   .route("/")
   .get(async (req, res, next) => {
     const knexInstance = req.app.get("db");
-    const user = req.user.id;
+    const userId = req.user.id;
     console.log("user id", req.user.id);
     try {
       const thoughts = await ThoughtService.getAllThoughts(
