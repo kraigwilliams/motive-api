@@ -1,1 +1,1 @@
-DROP TABLE IF EXISTS thought;
+DROP TABLE IF EXISTS "thought";
