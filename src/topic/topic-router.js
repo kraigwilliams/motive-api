@@ -101,6 +101,11 @@ topicRouter
   .get( async (req, res, next) => {
     
     try {
+
+ const knexInstance = req.app.get("db");
+            TopicService.getById(knexInstance, req.params.topicId)
+
+
     
     } catch(error) {
       next(error)
