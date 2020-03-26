@@ -37,6 +37,25 @@ topicRouter.use(requireAuth);
 //   })
 
 topicRouter
+.route("/:topicId/thoughts")
+.get(async (req,res,next)=>{
+    const knexInstance = req.app.get("db");
+    const userId = req.user.id;
+
+   try{
+       const thoughts= await TopicService.getAllThoughts(knexInstance,req.params.topicId)
+console.log(thoughts,"this is all the thoughts")
+      res.json(thoughts)
+   } 
+
+catch(error){
+    next(error)
+}
+
+
+}) 
+
+topicRouter
   .route("/")
   .get(async (req, res, next) => {
     const knexInstance = req.app.get("db");

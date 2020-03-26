@@ -11,10 +11,9 @@ const TopicService = {
       .insert(newTopic)
       .into("topic")
       .returning("*")
-      .then(rows=>{
-          return rows[0]
-      })
-      ;
+      .then(rows => {
+        return rows[0];
+      });
   },
 
   getById(knex, topicId) {
@@ -35,6 +34,13 @@ const TopicService = {
     return knex("topics")
       .where({ id })
       .update(newTopicFields);
+  },
+  getAllThoughts(knex, topicId) {
+    return knex
+      .from("thought")
+      .select("thought.*")
+
+      .where("thought_owner", topicId);
   }
 };
 
