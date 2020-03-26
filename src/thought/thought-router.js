@@ -11,7 +11,8 @@ const jsonBodyParser = express.json();
 const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
-  thought_content: xss(thought.thought_content)
+  thought_content: xss(thought.thought_content),
+  thought_owner:thought.thought_owner
 });
 
 thoughtRouter.use(requireAuth);
