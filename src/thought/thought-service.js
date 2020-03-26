@@ -10,6 +10,9 @@ const ThoughtService= {
         .insert(newThought)
         .into("thought")
         .returning("*")
+        .then(rows => {
+            return rows[0];
+          })
 
     }
 

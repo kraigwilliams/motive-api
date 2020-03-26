@@ -58,6 +58,8 @@ thoughtRouter
   })
 
   .post(jsonBodyParser, async (req, res, next) => {
+    const knexInstance = req.app.get("db");
+
     try {
       const { thought_title, thought_content } = req.body;
       const newThought = { thought_title, thought_content };
@@ -69,10 +71,11 @@ thoughtRouter
           });
         }
       }
+      console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
 
       const thought = await ThoughtService.insertThought(
-        req.app.get("db"),
+        knexInstance,
         newThought
       );
       
