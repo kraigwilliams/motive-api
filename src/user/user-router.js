@@ -34,7 +34,8 @@ userRouter
       const newUser = {
         username,
         password: hashedPassword,
-        name,
+        first_name,
+        last_name
       }
 
       const user = await UserService.insertUser(
