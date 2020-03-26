@@ -13,7 +13,7 @@ return knex
     },
 
     getById(knex,topicId){
-        return knex.from('topic').select('topic.*').where('id', topicId)
+        return knex.from('topic').select('topic.*').where('id', topicId).returning("*")
     },
     
     deleteTopic(knex,topicId){
