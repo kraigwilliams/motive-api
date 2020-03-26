@@ -12,10 +12,11 @@ const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:thought.thought_owner
+  thought_owner:Number(thought.thought_owner)
 });
 
-thoughtRouter.use(requireAuth);
+thoughtRouter
+.use(requireAuth)
 
 //   .use(async (req, res, next) => {
 //     try {
@@ -49,7 +50,8 @@ thoughtRouter
       );
 
       res.json(thoughts.map(serializeThought));
-    } catch (error) {
+    } 
+    catch (error) {
       next(error);
     }
   })
@@ -78,7 +80,8 @@ console.log("thought",thought)
         .location(path.posix.join(req.originalUrl, `/${thought.id}`))
 
         .json(serializeThought(thought));
-    } catch (error) {
+    } 
+    catch (error) {
       next(error);
     }
   });
