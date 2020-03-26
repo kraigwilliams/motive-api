@@ -71,7 +71,7 @@ thoughtRouter
         req.app.get("db"),
         newThought
       );
-
+console.log("thought",thought)
       res
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${thought.id}`))
