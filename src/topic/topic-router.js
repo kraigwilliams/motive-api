@@ -13,7 +13,8 @@ const serializeTopic = topic => ({
     id: Number(topic.id),
     topic_title: xss(topic.topic_title),
     topic_content: xss(topic.topic_content),
-    topic_owner:Number(topic.topic_owner)
+    topic_owner:Number(topic.topic_owner),
+    thought_topic:null
      
   });
 
