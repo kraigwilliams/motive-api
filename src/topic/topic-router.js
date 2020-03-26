@@ -73,7 +73,7 @@ topicRouter
         });
       }
     }
-    //newTopic.user_id = req.user.id;
+    newTopic.topic_owner = req.user.id;
 
     const topic = await TopicService.insertTopic(req.app.get("db"), newTopic)
     
