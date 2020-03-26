@@ -111,7 +111,7 @@ topicRouter
         });
       }
       
-      res.json(serializeTopic(topic));
+      res.json(topic);
       
     
     } 
