@@ -110,9 +110,9 @@ topicRouter
           error: { message: `This topic does not exist.` }
         });
       }
-      else{
+      
       res.json(serializeTopic(topic));
-      }
+      
     
     } 
     catch(error) {
