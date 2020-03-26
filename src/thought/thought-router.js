@@ -73,7 +73,7 @@ thoughtRouter
       }
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
-
+console.log(newThought,"new thought")
       const thought = await ThoughtService.insertThought(
         knexInstance,
         newThought
