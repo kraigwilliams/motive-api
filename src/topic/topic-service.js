@@ -1,7 +1,7 @@
 const TopicService= {
     getAllTopics(knex,id){
         return knex.from('topic').select('*')
-         .where('user_id',id)
+         .where('topic_owner',id)
     },
 
     insertTopic(knex,newTopic){
