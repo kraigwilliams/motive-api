@@ -104,7 +104,7 @@ topicRouter
 
  const knexInstance = req.app.get("db");
        const topic=  await TopicService.getById(knexInstance, Number(req.params.topicId))
-       console.log("topic",topic, "then",req.params, "req.params")
+       console.log("topic",topic, "then",req.params.topicId, "req.params")
        if (!topic) {
         return res.status(404).json({
           error: { message: `This topic does not exist.` }
@@ -114,7 +114,8 @@ topicRouter
       res.json(serializeTopic(topic));
       }
     
-    } catch(error) {
+    } 
+    catch(error) {
       next(error)
     }
     
