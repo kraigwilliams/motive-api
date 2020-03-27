@@ -13,7 +13,7 @@ const serializeThought = thought => ({
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
   thought_owner:Number(thought.thought_owner),
-  thought_topic:Number(thought.thought_topic)
+  // thought_topic:Number(thought.thought_topic)
   
 
 });
@@ -123,5 +123,14 @@ thoughtRouter
     next(error);
   }
 });
+.patch(jsonBodyParser,async (req,res,next)=>{
+  
+  const knexInstance = req.app.get("db");
+const {thought_title, thought_content}= req.body
+const newThoughFields={thought_title,thought_content}
+
+const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughFields )
+
+})
 
 module.exports = thoughtRouter;

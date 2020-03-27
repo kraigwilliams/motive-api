@@ -24,7 +24,14 @@ const ThoughtService= {
           .returning("*");
       }
 
-
+updateThought(knex,thoughtId,newNoteFields){
+return knex("thought")
+.where('id',thoughtId)
+.update(newNoteFields)
+.returning("*")
+.then(rows=>{
+    return rows[0]
+})
 }
 
-module.exports= ThoughtService
+module.exports= ThtoughtService
