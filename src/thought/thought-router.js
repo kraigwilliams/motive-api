@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const xss = require("xss");
-const ThoughtService = require("./thought-service");
+const ThoughtService = require("./thought-service")
 const { requireAuth } = require("../middleware/jwt-auth");
 
 const thoughtRouter = express.Router();
@@ -74,15 +74,12 @@ thoughtRouter
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
 console.log(newThought,"new thought")
-      const thought = await ThoughtService.insertThought(
-        knexInstance,
-        newThought
-      );
+      const thought = await ThoughtService.insertThought(knexInstance,newThought);
       
 console.log("thought",thought)
       res
         .status(201)
-        .location(path.posix.join(req.originalUrl, `/${thought.id}`))
+        //.location(path.posix.join(req.originalUrl, `/${thought.id}`))
 
         .json(serializeThought(thought));
     } 
