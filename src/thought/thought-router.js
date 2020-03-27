@@ -111,7 +111,7 @@ thoughtRouter
   try{
   const knexInstance = req.app.get("db");
 const {thought_title, thought_content, thought_topic}= req.body
-const newThoughFields={};
+const newThoughtFields={};
 
 if(thought_title){
   newThoughtFields.thought_title= thought_title
