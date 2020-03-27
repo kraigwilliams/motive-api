@@ -12,8 +12,8 @@ const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:Number(thought.thought_owner),
-  thought_topic:thought.thought_topic
+  thought_owner:Number(thought.thought_owner)
+
 });
 
 thoughtRouter
@@ -73,7 +73,7 @@ thoughtRouter
       }
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
-      newThought.thought_topic=null
+      
 console.log(newThought,"new thought")
       const createdThought = await ThoughtService.insertThought(knexInstance,newThought);
       
