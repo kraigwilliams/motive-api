@@ -5,7 +5,7 @@ const ThoughtService= {
     },
     
     insertThought(knex, newThought){
-        return 
+        return (
         knex 
         .insert(newThought)
         .into("thought")
@@ -13,7 +13,7 @@ const ThoughtService= {
         .then(rows => {
             return rows[0];
           })
-
+        )
     }
 
 
