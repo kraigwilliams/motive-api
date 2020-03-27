@@ -75,14 +75,14 @@ thoughtRouter
       newThought.thought_owner = req.user.id;
       newThought.thought_topic=null
 console.log(newThought,"new thought")
-      const thought = await ThoughtService.insertThought(knexInstance,newThought);
+      const createdThought = await ThoughtService.insertThought(knexInstance,newThought);
       
-console.log("thought",thought)
+console.log("created thought",createdThought)
       res
         .status(201)
         //.location(path.posix.join(req.originalUrl, `/${thought.id}`))
 
-        .json(serializeThought(thought));
+        .json(serializeThought(createdThought));
     } 
     catch (error) {
       next(error);
