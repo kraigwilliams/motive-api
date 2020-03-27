@@ -6,7 +6,7 @@ CREATE TABLE "thought"(
   "thought_title" TEXT NOT NULL UNIQUE,
   "thought_content" TEXT NOT NULL,
   "thought_owner" INTEGER REFERENCES "user"(id),
-  "thought_topic" INTEGER REFERENCES "topic"(id)
+  "thought_topic" INTEGER 
 -- "thought_type" TEXT //ENUM
   );
 
