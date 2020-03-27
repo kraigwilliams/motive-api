@@ -21,25 +21,6 @@ const serializeThought = thought => ({
 thoughtRouter
 .use(requireAuth)
 
-//   .use(async (req, res, next) => {
-//     try {
-//       const topics = await topicService.getAllTopics(
-//         req.app.get('db'),
-//         req.user.id,
-//       )
-
-//       if (!topics)
-//         return res.status(404).json({
-//           error: `You don't have any topics`,
-//         })
-
-//       req.topics = topics
-//       next()
-//     } catch (error) {
-//       next(error)
-//     }
-//   })
-
 thoughtRouter
   .route("/")
   .get(async (req, res, next) => {
@@ -146,7 +127,7 @@ if(thought_content){
 console.log("newThoughtFields", newThoughFields)
 const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughFields)
 res
-status(204)
+.status(204)
 .json(updatedThought)
   }
   catch(error){
