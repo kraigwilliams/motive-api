@@ -122,15 +122,20 @@ thoughtRouter
     console.log("get thought by Id error",error)
     next(error);
   }
-});
+})
 .patch(jsonBodyParser,async (req,res,next)=>{
-  
+  try{
   const knexInstance = req.app.get("db");
 const {thought_title, thought_content}= req.body
 const newThoughFields={thought_title,thought_content}
 
 const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughFields )
-
+  }
+  catch(error){
+   console.log("patch thought error",error)
+    next(error)
+  }
 })
+
 
 module.exports = thoughtRouter;
