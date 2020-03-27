@@ -12,8 +12,8 @@ const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:Number(thought.thought_owner),
-  thought_topic:Number(thought.thought_topic)
+  thought_owner:Number(thought.thought_owner)
+  
 
 });
 
@@ -83,7 +83,7 @@ console.log("created thought",createdThought)
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${createdThought.id}`))
 
-        .json(serializeThought(createdThought));
+        .json(createdThought);
     } 
     catch (error) {
       next(error);
