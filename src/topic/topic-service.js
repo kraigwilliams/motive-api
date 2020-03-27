@@ -7,13 +7,14 @@ const TopicService = {
   },
 
   insertTopic(knex, newTopic) {
-    return knex
+    return (knex
       .insert(newTopic)
       .into("topic")
       .returning("*")
       .then(rows => {
         return rows[0];
-      });
+      })
+    )
   },
 
   getById(knex, topicId) {
