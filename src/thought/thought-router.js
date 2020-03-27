@@ -86,6 +86,7 @@ console.log("created thought",createdThought)
         .json(createdThought);
     } 
     catch (error) {
+      console.log("error",error)
       next(error);
     }
   });
