@@ -109,7 +109,7 @@ thoughtRouter
       });
     }
 
-    res.json(serializeTopic(thought));
+    res.json(serializeThought(thought));
 
 
   } catch (error) {
