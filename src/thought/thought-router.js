@@ -80,7 +80,7 @@ console.log(newThought,"new thought")
 console.log("created thought",createdThought)
       res
         .status(201)
-        .location(path.posix.join(req.originalUrl, `/${thought.id}`))
+        .location(path.posix.join(req.originalUrl, `/${createdThought.id}`))
 
         .json(serializeThought(createdThought));
     } 
