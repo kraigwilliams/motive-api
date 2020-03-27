@@ -12,7 +12,8 @@ const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:Number(thought.thought_owner)
+  thought_owner:Number(thought.thought_owner),
+  thought_topic:Number(thought.thought_topic)
 
 });
 
