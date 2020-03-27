@@ -60,7 +60,8 @@ thoughtRouter
       }
       if(thought_topic){
         newThought.thought_topic=thought_topic 
-       }
+       
+      }
        
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
