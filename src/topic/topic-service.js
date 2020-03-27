@@ -40,8 +40,8 @@ const TopicService = {
     return knex
       .from("thought")
       .select("thought.*")
-
-      .where("thought_owner", topicId);
+       
+      .where("thought_topic", topicId);
   }
 };
 
