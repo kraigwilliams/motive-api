@@ -91,9 +91,29 @@ console.log("created thought",createdThought)
     }
   });
 
-thoughtRouter.route("/:thoughtId").get(async (req, res, next) => {
+thoughtRouter
+
+.route("/:thoughtId")
+
+.get(async (req, res, next) => {
   try {
+    const knexInstance = req.app.get("db");
+    const thought = await ThoughtService.getById(
+      knexInstance,
+      Number(req.params.thoughtId)
+    );
+    //console.log("topic", topic, "then", req.params.thoughtId, "req.params");
+    if (!thought) {
+      return res.status(404).json({
+        error: { message: `This thought does not exist.` }
+      });
+    }
+
+    res.json(serializeTopic(thought));
+
+
   } catch (error) {
+    console.log("get thought by Id error",error)
     next(error);
   }
 });

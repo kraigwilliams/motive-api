@@ -14,7 +14,15 @@ const ThoughtService= {
             return rows[0];
           })
         )
-    }
+    },
+    getById(knex, thoughtId) {
+        return knex
+          .from("thought")
+          .select("thought.*")
+          .first()
+          .where("id", thoughtId)
+          .returning("*");
+      }
 
 
 }
