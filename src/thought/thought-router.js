@@ -131,6 +131,7 @@ res
 .status(204)
 .json(updatedThought)
   }
+  
   catch(error){
    console.log("patch thought error",error)
     next(error)
