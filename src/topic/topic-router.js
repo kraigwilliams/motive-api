@@ -49,6 +49,7 @@ console.log(thoughts,"this is all the thoughts")
    } 
 
 catch(error){
+  console.log("error from get all thoughts in a topic",error)
     next(error)
 }
 

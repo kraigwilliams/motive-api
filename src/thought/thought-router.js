@@ -86,7 +86,7 @@ console.log("created thought",createdThought)
         .json(createdThought);
     } 
     catch (error) {
-      console.log("error",error)
+      console.log("thought router error",error)
       next(error);
     }
   });
