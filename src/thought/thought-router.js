@@ -124,14 +124,14 @@ if(thought_topic){
 if(thought_content){
   newThoughtFields.thought_content= thought_content
         }
-console.log("newThoughtFields", newThoughFields)
+console.log("newThoughtFields", newThoughtFields)
 const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
 console.log("updated Thought",updatedThought)
 res
 .status(204)
 .json(updatedThought)
   }
-  
+
   catch(error){
    console.log("patch thought error",error)
     next(error)
