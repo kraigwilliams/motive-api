@@ -12,7 +12,8 @@ const serializeThought = thought => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:Number(thought.thought_owner)
+  thought_owner:Number(thought.thought_owner),
+  thought_topic:Number(thought.thought_topic)
   
 
 });
@@ -62,9 +63,10 @@ thoughtRouter
     const knexInstance = req.app.get("db");
 
     try {
-      const { thought_title, thought_content } = req.body;
+      const { thought_title, thought_content ,thought_topic} = req.body;
+      
       const newThought = { thought_title, thought_content };
-
+      
       for (const [key, value] of Object.entries(newThought)) {
         if (value == null) {
           return res.status(400).json({
@@ -72,6 +74,10 @@ thoughtRouter
           });
         }
       }
+      if(thought_topic){
+        newThought.thought_topic=thought_topic 
+       }
+       
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
       
@@ -86,7 +92,7 @@ console.log("created thought",createdThought)
         .json(createdThought);
     } 
     catch (error) {
-      console.log("thought router error",error)
+      console.log("/thought router error",error)
       next(error);
     }
   });
