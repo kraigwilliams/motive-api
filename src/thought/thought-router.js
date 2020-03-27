@@ -32,9 +32,7 @@ thoughtRouter
         knexInstance,
         Number(req.user.id)
       );
-// if(!thoughts.thought_topic){
-//   thoughts.thought_topic= null
-// }
+
       res.json(thoughts.map(serializeThought));
     } 
     catch (error) {
