@@ -125,7 +125,7 @@ if(thought_content){
   newThoughtFields.thought_content= thought_content
         }
 console.log("newThoughtFields", newThoughFields)
-const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughFields)
+const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
 res
 .status(204)
 .json(updatedThought)
