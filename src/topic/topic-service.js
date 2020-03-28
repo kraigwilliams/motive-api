@@ -42,7 +42,17 @@ const TopicService = {
       .select("thought.*")
        
       .where("thought_topic", topicId);
-  }
+  },
+  updateTopic(knex,topicId,newTopicFields){
+    return knex("topic")
+    .where('id',topicId)
+    .update(newTopicFields)
+    .returning("*")
+    .then(rows=>{
+        return rows[0]
+    })
+    
+    }
 };
 
 module.exports = TopicService;

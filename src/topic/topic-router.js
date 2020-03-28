@@ -127,6 +127,35 @@ topicRouter
   }
 })
 
+.patch(jsonBodyParser,async (req,res,next)=>{
+  try{
+  const knexInstance = req.app.get("db");
+const {topic_title, topic_content}= req.body
+const newTopicFields={};
+
+if(topic_title){
+  newTopicFields.topic_title= topic_title
+        }
+
+
+
+if(topic_content){
+  newTopicFields.topic_content= topic_content
+        }
+console.log("newTopicFields", newTopicFields)
+const updatedTopic = await TopicService.updateTopic(knexInstance,req.params.topicId, newTopicFields)
+console.log("updated Topic",updatedTopic)
+res
+.status(200)
+.json(updatedTopic)
+  }
+
+  catch(error){
+   console.log("patch topic error",error)
+    next(error)
+  }
+})
+
 
 .delete(async(req,res,next)=>{
   try{
