@@ -139,13 +139,18 @@ res
   }
 })
 .delete((req,res,next)=>{
+  try{
   const knexInstance = req.app.get('db')
   ThoughtService.deleteNote(knexInstance,req.params.thoughtId)
   .then(()=>{
     res.status(204).end()
   })
-  .catch(next)
+ 
 }
-)
+catch(error){
+  console.log("delete thought by id error start", error,"delete thought by id error end")
+   next(error)
+ }
+})
 
 module.exports = thoughtRouter;
