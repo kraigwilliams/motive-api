@@ -32,7 +32,7 @@ const TopicService = {
       .delete();
   },
   updateTopic(knex, id, newTopicFields) {
-    return knex("topics")
+    return knex("topic")
       .where({ id })
       .update(newTopicFields);
   },
