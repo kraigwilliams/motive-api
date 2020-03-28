@@ -100,7 +100,12 @@ topicRouter
     }
   });
 
-topicRouter.route("/:topicId").get(async (req, res, next) => {
+topicRouter
+
+.route("/:topicId")
+
+
+.get(async (req, res, next) => {
   try {
     const knexInstance = req.app.get("db");
     const topic = await TopicService.getById(
@@ -115,9 +120,28 @@ topicRouter.route("/:topicId").get(async (req, res, next) => {
     }
 
     res.json(serializeTopic(topic));
-  } catch (error) {
+  } 
+  catch (error) {
+  console.log("get topic by id error start",error,"get topic by id error end")
     next(error);
   }
-});
+})
+
+
+.delete(async(req,res,next)=>{
+  try{
+  const knexInstance = req.app.get('db')
+  await NotesService.deleteNote(knexInstance,req.params.noteId)
+  
+    res.status(204).end()
+  
+
+}
+catch(error){
+console.log("delete thought error start",error,"delete thought error end")
+  next(error)
+}
+}
+)
 
 module.exports = topicRouter;

@@ -33,7 +33,14 @@ return knex("thought")
     return rows[0]
 })
 
-}
+},
+
+
+  deleteThought(knex, thoughtId) {
+    return knex("thought")
+      .where("id", id)
+      .delete();
+  }
 }
 
 module.exports= ThoughtService
