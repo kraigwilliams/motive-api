@@ -38,7 +38,7 @@ return knex("thought")
 
   deleteThought(knex, thoughtId) {
     return knex("thought")
-      .where("id", id)
+      .where("id", thoughtId)
       .delete();
   }
 }
