@@ -131,7 +131,7 @@ topicRouter
 .delete(async(req,res,next)=>{
   try{
   const knexInstance = req.app.get('db')
-  await NotesService.deleteNote(knexInstance,req.params.noteId)
+  await NotesService.deleteTopic(knexInstance,req.params.topicId)
   
     res.status(204).end()
   

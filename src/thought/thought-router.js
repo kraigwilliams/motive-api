@@ -141,7 +141,7 @@ res
 .delete(async( req,res,next)=>{
   try{
   const knexInstance = req.app.get('db')
-  await ThoughtService.deleteNote(knexInstance,req.params.thoughtId)
+  await ThoughtService.deleteThought(knexInstance,req.params.thoughtId)
   
     res.status(204).end()
   
