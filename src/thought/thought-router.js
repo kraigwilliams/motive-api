@@ -138,13 +138,13 @@ res
     next(error)
   }
 })
-.delete((req,res,next)=>{
+.delete(async( req,res,next)=>{
   try{
   const knexInstance = req.app.get('db')
-  ThoughtService.deleteNote(knexInstance,req.params.thoughtId)
-  .then(()=>{
+  await ThoughtService.deleteNote(knexInstance,req.params.thoughtId)
+  
     res.status(204).end()
-  })
+  
  
 }
 catch(error){
