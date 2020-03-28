@@ -129,7 +129,7 @@ console.log("newThoughtFields", newThoughtFields)
 const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
 console.log("updated Thought",updatedThought)
 res
-.status(204)
+.status(200)
 .json(updatedThought)
   }
 
