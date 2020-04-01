@@ -2,9 +2,10 @@ const ConnectionService= {
 
     getAllConnections(knex,senderId){
         return knex
-        .from('connections')
+        .from('fokul_users')
         .select('*')
-        .where('sender_id',senderId)
+        .join('connections','fokul_user.id', '=', "connections.receiver_id")
+        .where('connections.sender_id',senderId)
     },
 
 
