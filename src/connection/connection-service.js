@@ -2,7 +2,7 @@ const ConnectionService= {
 
     getAllConnections(knex,senderId){
         return knex
-        .from('connection')
+        .from('connections')
         .select('*')
         .where('receiver_id',senderId)
     },
@@ -20,7 +20,7 @@ const ConnectionService= {
         },
         GetNewConnection(knex,senderId){
             return knex
-            .from('connection')
+            .from('connections')
             .select('*')
             .whereNot('sender_id',senderId)
 
