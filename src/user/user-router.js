@@ -49,6 +49,7 @@ userRouter
         .location(path.posix.join(req.originalUrl, `/${user.id}`))
         .json(UserService.serializeUser(user))
     } catch(error) {
+      console.log("user error",error)
       next(error)
     }
   })
