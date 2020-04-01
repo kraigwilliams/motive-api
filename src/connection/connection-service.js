@@ -23,10 +23,10 @@ const ConnectionService= {
         getNonConnections(knex,senderId){
             return knex
             .from('fokul_users')
-        .select('id','username','first_name','last_name')
+        .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
         .join('connections','fokul_users.id', '=', "connections.receiver_id")
         .whereNot('connections.sender_id',senderId)
-            .orWhereNot('receiver_id',senderId)
+            .orWhereNot('connections.receiver_id',senderId)
             .orWhereNot('fokul_users.id',senderId)
         
 
