@@ -4,7 +4,7 @@ const ConnectionService= {
         return knex
         .from('connections')
         .select('*')
-        .where('receiver_id',senderId)
+        .where('sender_id',senderId)
     },
 
 
