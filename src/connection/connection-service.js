@@ -20,11 +20,14 @@ const ConnectionService= {
                 return rows[0]
             })
         },
-        GetNewConnection(knex,senderId){
+        GetNonConnection(knex,senderId){
             return knex
-            .from('connections')
-            .select('*')
-            .whereNot('sender_id',senderId)
+            .from('fokul_users')
+        .select('*')
+        .join('connections','fokul_users.id', '=', "connections.receiver_id")
+        .whereNot('connections.sender_id',senderId)
+            .orWhereNot('sender_id',senderId)
+        
 
         }
 }
