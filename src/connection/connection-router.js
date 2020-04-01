@@ -6,6 +6,12 @@ const { requireAuth } = require("../middleware/jwt-auth");
 
 const connectionRouter= express.Router()
 
+const jsonBodyParser = express.json();
+
+connectionRouter
+.use(requireAuth)
+
+
 connectionRouter
   .route("/")
   .get(async (req, res, next) => {
