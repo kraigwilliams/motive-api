@@ -22,13 +22,19 @@ const ConnectionService= {
         },
         getNonConnections(knex,senderId){
             return knex
+           
+
+            //'fokul_users.id', '=', "connections.receiver_id"
+
             .from('fokul_users')
         .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
-        .fullOuterJoin('connections','fokul_users.id', '=', "connections.receiver_id")
+        .fullOuterJoin('connections')
         .whereNot(
             {'connections.sender_id':senderId,
             //   fokul_users.id:senderId,
-              'connections.receiver_id':senderId 
+              'connections.receiver_id':senderId ,
+            //   'fokul_users.id':'connections.receiver_id',
+            //   'fokul_users.id':'connections.receiver_id',
             })
             // .orWhereNot('connections.receiver_id',senderId)
             // .orWhereNot('fokul_users.id',senderId)
