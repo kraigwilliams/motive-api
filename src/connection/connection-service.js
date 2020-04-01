@@ -20,7 +20,7 @@ const ConnectionService= {
                 return rows[0]
             })
         },
-        GetNonConnection(knex,senderId){
+        GetNonConnections(knex,senderId){
             return knex
             .from('fokul_users')
         .select('*')
