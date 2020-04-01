@@ -26,7 +26,7 @@ const ConnectionService= {
         .select('*')
         .join('connections','fokul_users.id', '=', "connections.receiver_id")
         .whereNot('connections.sender_id',senderId)
-            .orWhereNot('sender_id',senderId)
+            .orWhereNot('receiver_id',senderId)
         
 
         }
