@@ -24,7 +24,7 @@ const ConnectionService= {
             return knex
             .from('fokul_users')
         .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
-        .join('connections','fokul_users.id', '=', "connections.receiver_id")
+        .fullOuterJoin('connections','fokul_users.id', '=', "connections.receiver_id")
         .whereNot(
             {'connections.sender_id':senderId,
             //   fokul_users.id:senderId,
