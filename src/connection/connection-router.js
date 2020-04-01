@@ -31,5 +31,24 @@ connectionRouter
         next(error);
     }
   })
+  connectionRouter
+  .route("/new")
+  .get(async (req, res, next) => {
+    const knexInstance = req.app.get("db");
+    const userId = Number(req.user.id);
+    console.log("user id", req.user.id);
+    try {
+      const connections = await ConnectionService.getNonConnections(
+        knexInstance,
+        userId
+      );
+
+      res.json(connections);
+    } 
+    catch (error) {
+     console.log("get connections error",error)
+        next(error);
+    }
+  })
 
   module.exports= connectionRouter
