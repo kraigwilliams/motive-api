@@ -7,7 +7,7 @@ const { NODE_ENV } = require('./config')
 const errorHandler = require('./middleware/error-handler')
 const authRouter = require('./auth/auth-router')
 const userRouter= require('./user/user-router')
-
+const connectionRouter = require('./connection/connection-router')
 const topicRouter= require('./topic/topic-router')
 const thoughtRouter= require('./thought/thought-router')
 
@@ -24,6 +24,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/topic', topicRouter)
 app.use('/api/thought', thoughtRouter)
 app.use('/api/user', userRouter)
+app.use('/api/connection',connectionRouter)
 
  app.get('/',(req,res)=>{
  res.status(200).send("Hello World.")
