@@ -1,7 +1,7 @@
 const express = require("express");
 const path = require("path");
 const xss = require("xss");
-const ConnectionService = require("./thought-service")
+const ConnectionService = require("./connection-service")
 const { requireAuth } = require("../middleware/jwt-auth");
 
 const connectionRouter= express.Router()
@@ -25,3 +25,5 @@ connectionRouter
         next(error);
     }
   })
+
+  module.exports= connectionRouter

@@ -19,7 +19,7 @@ const ConnectionService= {
             })
         },
         GetNewConnection(knex,senderId){
-            return knex.
+            return knex
             .from('connection')
             .select('*')
             .whereNot('sender_id',senderId)
