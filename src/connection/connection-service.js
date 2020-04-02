@@ -29,8 +29,8 @@ const ConnectionService= {
               //.from('fokul_users')
               //.whereNot({'fokul_users.id' : userId})
               //.whereNotExists(function(){
-                .select('*').from('connections').where({'connections.sender_id' : '2', 'connections.receiver_id' : userId})
-                  .orWhere({'connections.sender_id' : userId, 'connections.receiver_id' : '2'});
+                .select('*').from('connections').where({'connections.sender_id' : '1', 'connections.receiver_id' : userId})
+                  .orWhere({'connections.sender_id' : userId, 'connections.receiver_id' : '1'});
               //});       
           
   
