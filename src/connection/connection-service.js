@@ -27,7 +27,7 @@ const ConnectionService= {
     // let fokulId= 'fokul_users.id';
     return knex
       .select('*')
-      .from('fokul_users').as('fu') 
+      .from('fokul_users AS fu') 
       .whereNot({'fu.id' : userId})
       .whereNotExists(function(){
         this.select('*').from('connections')
