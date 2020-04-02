@@ -29,9 +29,10 @@ const ConnectionService= {
             .from('fokul_users')
         
         .leftOuterJoin('connections','fokul_users.id', "connections.receiver_id")
+        
         .whereNot(
             {'connections.sender_id':senderId,
-            //   fokul_users.id:senderId,
+          'fokul_users.id':senderId,
               'connections.receiver_id':senderId 
             //   'fokul_users.id':'connections.receiver_id',
             //   'fokul_users.id':'connections.receiver_id',
