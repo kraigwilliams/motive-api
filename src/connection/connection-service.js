@@ -1,14 +1,21 @@
 const ConnectionService= {
 
   getAllConnections(knex,userId){
-    return knex
-      .from('fokul_users')
-      .select('*')
-      .join('connections', function(){
-        this.on('fokul_users.id', '=', 'connections.receiver_id').orOn('fokul_users.id', '=', 'connections.sender_id');
-      })
-      .where(function() {
-        this.where('connections.sender_id', userId).orWhere('connections.receiver_id', userId).andWhereNot('fokul_users.id', userId);
+    return knex.raw(
+      `SELECT
+        *
+    FROM
+        fokul_users
+        INNER JOIN connections ON fokul_users.id = connections.receiver_id
+            OR fokul_users.id = connections.sender_id
+    WHERE
+        (connections.sender_id = ${userId} OR connections.receiver_id = ${userId})
+        AND NOT (fokul_users.id = ${userId} )
+        ;
+    `
+    )
+      .then(result => {
+        return result.rows;
       });
   },
 
