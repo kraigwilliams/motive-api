@@ -172,7 +172,7 @@ thoughtRouter
 
 thoughtRouter
   .route('/share/:thoughtId')
-  .post(async (req, res, next) => {
+  .post(jsonBodyParser, async (req, res, next) => {
     const knexInstance = req.app.get('db');
 
     try {
