@@ -1,4 +1,3 @@
-
 --CREATE TYPE "level" AS ENUM ('private', 'collaboration', 'shared','public');
 
 CREATE TABLE "share_level"(

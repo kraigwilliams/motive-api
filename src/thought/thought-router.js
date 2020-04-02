@@ -55,9 +55,12 @@ thoughtRouter
           });
         }
       }
-      if(thought_topic){
-        newThought.thought_topic=thought_topic 
-      }
+
+      if(thought_topic === 0 ){
+        newThought.thought_topic=null
+      } else {
+        newThought.thought_topic = thought_topic
+      };
        
       console.log("thought user id", req.user.id)
       newThought.thought_owner = req.user.id;
@@ -72,7 +75,6 @@ thoughtRouter
       res
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${createdThought.id}`))
-
         .json(createdThought);
     } 
     catch (error) {
