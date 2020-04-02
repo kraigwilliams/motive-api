@@ -23,10 +23,12 @@ const ConnectionService= {
 
         getNonConnections(knex,senderId){
             return
-            knex.raw(`select * from fokul_users
-            where fokul_users.id != ${senderId}
-            and not exists (select * from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${senderId})
-            or (connections.sender_id = ${senderId}  and connections.receiver_id = fokul_users.id))`)
+            knex('fokul_users')
+           .select('*')
+        .whereRaw(`fokul_users.id != ${senderId}`)
+        .whereNotExist(function(){
+	this.select('*').from('connections').whereRaw(`connections.sender_id = fokul_users.id and connections.receiver_id =  ${senderId}`)
+.orWhere(`connections.sender_id = ${senderId} and connections.receiver_id = fokul_users.id`)
         }
 
         // getNonConnectionsTable(knex,senderId){
