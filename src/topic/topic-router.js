@@ -100,11 +100,26 @@ topicRouter
     }
   });
 
+  topicRouter
+  .route("/shared")
+  .get(async (req, res, next) => {
+    const userId = Number(req.user.id);
+    try {
+      const knexInstance = req.app.get('db');
+      const sharedTopics = await TopicService.getSharedTopics(
+        knexInstance, 
+        userId
+      ) 
+      res.json(sharedTopics)
+    } 
+    catch(error) {
+      console.log("get shared topics by user id error start",error, "get shared topics by user id error end")
+        next(error);
+    }
+  })
+
 topicRouter
-
 .route("/:topicId")
-
-
 .get(async (req, res, next) => {
   try {
     const knexInstance = req.app.get("db");
@@ -122,11 +137,10 @@ topicRouter
     res.json(serializeTopic(topic));
   } 
   catch (error) {
-  console.log("get topic by id error start",error,"get topic by id error end")
+  console.log("get topic by id error start", error,"get topic by id error end")
     next(error);
   }
 })
-
 .patch(jsonBodyParser,async (req,res,next)=>{
   try{
   const knexInstance = req.app.get("db");
@@ -155,7 +169,6 @@ res
     next(error)
   }
 })
-
 
 .delete(async(req,res,next)=>{
   try{
