@@ -3,7 +3,7 @@ const ConnectionService= {
   getAllConnections(knex,userId){
     return knex.raw(
       `SELECT
-        fokul_users.id, fokul_user.first_name, fokul_users.last_name, fokul_users.username
+        fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
     FROM
         fokul_users
         INNER JOIN connections ON fokul_users.id = connections.receiver_id
