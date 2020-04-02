@@ -34,9 +34,10 @@ const ConnectionService= {
             {'connections.sender_id':senderId,
           'fokul_users.id':senderId,
               'connections.receiver_id':senderId 
+        })
             //   'fokul_users.id':'connections.receiver_id',
             //   'fokul_users.id':'connections.receiver_id',
-            })
+            
             // .orWhereNot('connections.receiver_id',senderId)
             // .orWhereNot('fokul_users.id',senderId)
             //.orWhereNot('connections.sender_id',senderId)
