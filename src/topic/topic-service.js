@@ -12,10 +12,10 @@ const TopicService = {
       LEFT JOIN topic_connections 
       ON topic.id = topic_connections.topic_id
       WHERE topic_connections."shared_userId"=${id};`
-    );
-    // .then(results => {
-    //   return results.rows;
-    // });
+    )
+      .then(results => {
+        return results.rows;
+      });
   },
 
   insertTopic(knex, newTopic) {
