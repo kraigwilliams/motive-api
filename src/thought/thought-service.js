@@ -4,7 +4,7 @@ const ThoughtService= {
       .where('thought_owner',id);
   },
 
-  getSharedTopics(knex, id) {
+  getSharedThoughts(knex, id) {
     return knex.raw(
       `SELECT * FROM thought
         LEFT JOIN thought_connections 
