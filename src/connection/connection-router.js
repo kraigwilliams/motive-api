@@ -42,7 +42,7 @@ connectionRouter
         knexInstance,
         userId
       );
-
+console.log('final non connections',connections)
       res.json(connections);
     } 
     catch (error) {
