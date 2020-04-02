@@ -28,7 +28,7 @@ const ConnectionService= {
             .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
             .from('fokul_users')
         
-        .join('connections','fokul_users.id', "connections.receiver_id")
+        .leftOuterJoin('connections','fokul_users.id', "connections.receiver_id")
         
         // .whereNot(
         //     {'connections.sender_id':senderId,
