@@ -29,7 +29,7 @@ const ConnectionService= {
         .whereNotExist(function(){
 	this.select('*').from('connections').whereRaw(`connections.sender_id = fokul_users.id and connections.receiver_id =  ${senderId}`)
 .orWhere(`connections.sender_id = ${senderId} and connections.receiver_id = fokul_users.id`)
-        }
+        })
 
         // getNonConnectionsTable(knex,senderId){
         //  return knex
