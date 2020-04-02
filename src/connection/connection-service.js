@@ -34,7 +34,7 @@ const ConnectionService= {
         
   getNonConnections(knex,userId){
     return knex.raw(
-      `select fokul_users.id, fokul_user.first_name, fokul_users.last_name, fokul_users.username
+      `select fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
       from fokul_users
       where fokul_users.id != ${userId}
       and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${userId})
