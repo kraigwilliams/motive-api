@@ -1,30 +1,31 @@
 const ConnectionService= {
 
-  getAllConnections(knex,senderId){
+  getAllConnections(knex,userId){
     return knex
       .from('fokul_users')
       .select('*')
-      .join('connections','fokul_users.id', '=', 'connections.receiver_id')
-      .where('connections.sender_id', senderId)
-      .orWhere('connections.receiver_id', senderId);
-
+      .join('connections', function(){
+        this.on('fokul_users.id', '=', 'connections.receiver_id').orOn('fokul_users.id', '=', 'connections.sender_id');
+      })
+      .where(function() {
+        this.where('connections.sender_id', userId).orWhere('connections.receiver_id', userId).whereNot('fokul_users.id', userId);
+      });
   },
 
 
-  insertConnection(knex,senderID, recieverID) {
+  insertConnection(knex,senderId, recieverId) {
     return knex
-      .into("connections")
+      .into('connections')
       .insert({sender_id: senderId, reciever_id: recieverId})
         
       .returning('*')
       .then(rows => {
-        return rows[0]
-      })
+        return rows[0];
+      });
   },
 
         
   getNonConnections(knex,userId){
-    // let fokulId= 'fokul_users.id';
     return knex
       .raw(
         `select * from fokul_users
