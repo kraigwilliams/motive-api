@@ -7,6 +7,7 @@ const ConnectionService= {
         .join('connections','fokul_users.id', '=', "connections.receiver_id")
         .where('connections.sender_id',senderId)
         .orWhere('connections.receiver_id',senderId)
+
     },
 
 
@@ -31,45 +32,7 @@ const ConnectionService= {
 .orWhere(`connections.sender_id = ${senderId} and connections.receiver_id = fokul_users.id`)
         })
 
-        // getNonConnectionsTable(knex,senderId){
-        //  return knex
-        //  .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
-        //  .from('fokul_users')
-        //  .whereNot('id',senderId)
-        // }
-        // getNonUsersTable(knex,senderId){
-        // return knex
-        // .select('*')
-        // .from('connection')
-        // .whereNot({
-        //     sender()
-        // })
-
-        // }
-        // getNonConnections(knex,senderId){
-        //     return knex
-           
-
-        //     //'fokul_users.id', '=', "connections.receiver_id"
-        //     .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
-        //     .from('fokul_users')
-        
-        // .leftOuterJoin('connections','fokul_users.id', "connections.receiver_id")
-        
-        // .whereNot({
-        // 'connections.sender_id':senderId,
-        //    'fokul_users.id':senderId,
-        //    'connections.receiver_id':senderId 
-        //  })
-
-            //   'fokul_users.id':'connections.receiver_id',
-            //   'fokul_users.id':'connections.receiver_id',
-            
-            // .orWhereNot('connections.receiver_id',senderId)
-            // .orWhereNot('fokul_users.id',senderId)
-            //.orWhereNot('connections.sender_id',senderId)
-        
-
+  
         
 }
 
