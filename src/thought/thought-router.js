@@ -103,74 +103,101 @@ thoughtRouter
   });
 
 thoughtRouter
+  .route("/:thoughtId")
+  .get(async (req, res, next) => {
+    try {
+      const knexInstance = req.app.get("db");
+      const thought = await ThoughtService.getById(
+        knexInstance,
+        Number(req.params.thoughtId)
+      );
+      //console.log("topic", topic, "then", req.params.thoughtId, "req.params");
+      if (!thought) {
+        return res.status(404).json({
+          error: { message: `This thought does not exist.` }
+        });
+      }
 
-.route("/:thoughtId")
+      res.json(serializeThought(thought));
+    } catch (error) {
+      console.log("get thought by Id error",error)
+      next(error);
+    }
+  })
 
-.get(async (req, res, next) => {
-  try {
+  .patch(jsonBodyParser,async (req,res,next)=>{
+    try{
     const knexInstance = req.app.get("db");
-    const thought = await ThoughtService.getById(
-      knexInstance,
-      Number(req.params.thoughtId)
-    );
-    //console.log("topic", topic, "then", req.params.thoughtId, "req.params");
-    if (!thought) {
-      return res.status(404).json({
-        error: { message: `This thought does not exist.` }
-      });
+  const {thought_title, thought_content, thought_topic}= req.body
+  const newThoughtFields={};
+
+  if(thought_title){
+    newThoughtFields.thought_title= thought_title
+          }
+
+  if(thought_topic){
+    newThoughtFields.thought_topic= thought_topic
+          }
+
+  if(thought_content){
+    newThoughtFields.thought_content= thought_content
+          }
+  console.log("newThoughtFields", newThoughtFields)
+  const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
+  console.log("updated Thought",updatedThought)
+  res
+  .status(200)
+  .json(updatedThought)
     }
 
-    res.json(serializeThought(thought));
-
-
-  } catch (error) {
-    console.log("get thought by Id error",error)
-    next(error);
+    catch(error){
+    console.log("patch thought error",error)
+      next(error)
+    }
+  })
+  .delete(async( req,res,next)=>{
+    try{
+    const knexInstance = req.app.get('db')
+    await ThoughtService.deleteThought(knexInstance,req.params.thoughtId)
+    
+      res.status(204).end()
+    
+  
   }
-})
-.patch(jsonBodyParser,async (req,res,next)=>{
-  try{
-  const knexInstance = req.app.get("db");
-const {thought_title, thought_content, thought_topic}= req.body
-const newThoughtFields={};
-
-if(thought_title){
-  newThoughtFields.thought_title= thought_title
-        }
-
-if(thought_topic){
-  newThoughtFields.thought_topic= thought_topic
-        }
-
-if(thought_content){
-  newThoughtFields.thought_content= thought_content
-        }
-console.log("newThoughtFields", newThoughtFields)
-const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
-console.log("updated Thought",updatedThought)
-res
-.status(200)
-.json(updatedThought)
-  }
-
   catch(error){
-   console.log("patch thought error",error)
+    console.log("delete thought by id error start", error,"delete thought by id error end")
     next(error)
   }
 })
-.delete(async( req,res,next)=>{
-  try{
-  const knexInstance = req.app.get('db')
-  await ThoughtService.deleteThought(knexInstance,req.params.thoughtId)
-  
-    res.status(204).end()
-  
- 
-}
-catch(error){
-  console.log("delete thought by id error start", error,"delete thought by id error end")
-   next(error)
- }
-})
+
+thoughtRouter
+  .route('/share/:thoughtId')
+  .post(async (req, res, next) => {
+    const knexInstance = req.app.get('db');
+
+    try {
+      const { thought_id, shared_userId, shared_level } = req.body;
+      const owner_id = req.user.id;
+
+      const sharedThought = {
+        owner_id,
+        shared_userId,
+        thought_id, 
+        level: shared_level
+      }
+
+      ThoughtService.shareThought(
+        knexInstance,
+        sharedThought
+      )
+      res
+        .status(201)
+        .json(sharedThought);
+    } 
+    catch (error) {
+      console.log('thought router error sharing thought start', error, 'end of thought sharing error')
+      next(error);
+    }
+  });
 
 module.exports = thoughtRouter;

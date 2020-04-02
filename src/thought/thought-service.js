@@ -50,6 +50,16 @@ const ThoughtService= {
     return knex('thought')
       .where('id', thoughtId)
       .delete();
+  },
+
+  shareThought(knex, sharedThought) {
+    return knex 
+      .insert(sharedThought)
+      .into('thought_connections')
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
   }
 };
 
