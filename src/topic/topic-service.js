@@ -1,9 +1,9 @@
 const TopicService = {
   getAllTopics(knex, id) {
     return knex
-      .from("topic")
-      .select("*")
-      .where("topic_owner", id);
+      .from('topic')
+      .select('*')
+      .where('topic_owner', id);
   },
 
   getSharedTopics(knex, id) {
@@ -21,8 +21,8 @@ const TopicService = {
   insertTopic(knex, newTopic) {
     return (knex
       .insert(newTopic)
-      .into("topic")
-      .returning("*")
+      .into('topic')
+      .returning('*')
       .then(rows => {
         return rows[0];
       })
@@ -31,16 +31,16 @@ const TopicService = {
 
   getById(knex, topicId) {
     return knex
-      .from("topic")
-      .select("*")
+      .from('topic')
+      .select('*')
       .first()
-      .where("id", topicId)
-      .returning("*");
+      .where('id', topicId)
+      .returning('*');
   },
 
   deleteTopic(knex, topicId) {
-    return knex("topic")
-      .where("id", topicId)
+    return knex('topic')
+      .where('id', topicId)
       .delete();
   },
 
@@ -52,17 +52,17 @@ const TopicService = {
 
   getAllThoughts(knex, topicId) {
     return knex
-      .from("thought")
-      .select("thought.*")
+      .from('thought')
+      .select('thought.*')
        
-      .where("thought_topic", topicId);
+      .where('thought_topic', topicId);
   },
 
   updateTopic(knex,topicId,newTopicFields){
-    return knex("topic")
+    return knex('topic')
       .where('id',topicId)
       .update(newTopicFields)
-      .returning("*")
+      .returning('*')
       .then(rows=>{
         return rows[0];
       });  

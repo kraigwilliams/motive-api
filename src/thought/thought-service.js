@@ -17,16 +17,15 @@ const ThoughtService= {
   },
     
   insertThought(knex, newThought){
-    return (
-      knex 
-        .insert(newThought)
-        .into('thought')
-        .returning('*')
-        .then(rows => {
-          return rows[0];
-        })
-    );
+    return knex 
+      .insert(newThought)
+      .into('thought')
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
   },
+
   getById(knex, thoughtId) {
     return knex
       .from('thought')
@@ -46,7 +45,6 @@ const ThoughtService= {
       });
 
   },
-
 
   deleteThought(knex, thoughtId) {
     return knex('thought')
