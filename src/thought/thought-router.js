@@ -176,15 +176,19 @@ thoughtRouter
     const knexInstance = req.app.get('db');
 
     try {
-      const { thought_id, shared_userId, shared_level } = req.body;
+      const thoughtId = req.params.thoughtId;
+      console.log(thoughtId, 'thought id in share');
+      const { shared_userId, shared_level } = req.body;
       const owner_id = req.user.id;
 
       const sharedThought = {
         owner_id,
         shared_userId,
-        thought_id, 
+        thought_id: thoughtId, 
         level: shared_level
       }
+
+
 
       ThoughtService.shareThought(
         knexInstance,
