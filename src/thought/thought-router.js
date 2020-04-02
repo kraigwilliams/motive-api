@@ -82,6 +82,25 @@ console.log("created thought",createdThought)
     }
   });
 
+
+  thoughtRouter
+  .route("/shared")
+  .get(async (req, res, next) => {
+    const userId = Number(req.user.id);
+    try {
+      const knexInstance = req.app.get('db');
+      const sharedThoughts = await ThoughtService.getSharedThoughts(
+        knexInstance, 
+        userId
+      ) 
+      res.json(sharedThoughts)
+    } 
+    catch(error) {
+      console.log("get shared thoughts by user id error start",error, "get shared thoughts by user id error end")
+        next(error);
+    }
+  });
+
 thoughtRouter
 
 .route("/:thoughtId")
