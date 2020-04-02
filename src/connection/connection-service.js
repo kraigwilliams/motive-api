@@ -36,5 +36,6 @@ const ConnectionService= {
         
 }
 
+}
 
 module.exports= ConnectionService
