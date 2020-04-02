@@ -33,7 +33,6 @@ const ConnectionService= {
         and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${userId})
         or (connections.sender_id = ${userId} and connections.receiver_id = fokul_users.id))`
       )
-      .returning('*')
       .then(rows => {
         return rows[0];
       }); 
