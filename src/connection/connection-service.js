@@ -23,7 +23,8 @@ const ConnectionService= {
         },
 
         getNonConnections(knex,userId){
-            return knex
+            
+            knex
               .select('*')
               .from('fokul_users')
               .whereNot({'fokul_users.id' : userId})
