@@ -23,7 +23,8 @@ const ConnectionService= {
         },
 
         getNonConnections(knex,senderId){
-            return knex
+            return
+             knex
             .from('connections')
             .select('*')
            
