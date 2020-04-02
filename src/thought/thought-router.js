@@ -185,7 +185,7 @@ thoughtRouter
       const sharedThought = {
         owner_id: owner_id,
         shared_userId: shared_userId,
-        thoughtId: thoughtId, 
+        thought_id: thoughtId, 
         level: shared_level
       }
 
