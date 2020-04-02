@@ -20,15 +20,39 @@ const ConnectionService= {
                 return rows[0]
             })
         },
+
         getNonConnections(knex,senderId){
-            return knex
+            return
+            knex.raw(`select * from fokul_users
+            where fokul_users.id != 2
+            and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = 2)
+            or (connections.sender_id = 2 and connections.receiver_id = fokul_users.id))`)
+        }
+
+        // getNonConnectionsTable(knex,senderId){
+        //  return knex
+        //  .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
+        //  .from('fokul_users')
+        //  .whereNot('id',senderId)
+        // }
+        // getNonUsersTable(knex,senderId){
+        // return knex
+        // .select('*')
+        // .from('connection')
+        // .whereNot({
+        //     sender()
+        // })
+
+        // }
+        // getNonConnections(knex,senderId){
+        //     return knex
            
 
-            //'fokul_users.id', '=', "connections.receiver_id"
-            .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
-            .from('fokul_users')
+        //     //'fokul_users.id', '=', "connections.receiver_id"
+        //     .select('fokul_users.id','fokul_users.username','fokul_users.first_name','fokul_users.last_name')
+        //     .from('fokul_users')
         
-        .leftOuterJoin('connections','fokul_users.id', "connections.receiver_id")
+        // .leftOuterJoin('connections','fokul_users.id', "connections.receiver_id")
         
         // .whereNot({
         // 'connections.sender_id':senderId,
