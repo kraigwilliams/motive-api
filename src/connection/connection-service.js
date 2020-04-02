@@ -25,7 +25,7 @@ const ConnectionService= {
             return
             knex.raw(`select * from fokul_users
             where fokul_users.id != ${senderId}
-            and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${senderId})
+            and not exists (select * from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${senderId})
             or (connections.sender_id = ${senderId}  and connections.receiver_id = fokul_users.id))`)
         }
 
