@@ -22,20 +22,14 @@ const ConnectionService= {
             })
         },
 
-        getNonConnections(knex,userId){
-            return
-            knex
-              //.select('*')
-              //.from('fokul_users')
-              //.whereNot({'fokul_users.id' : userId})
-              //.whereNotExists(function(){
-                .from('fokul_users')
-                .select('*')
-                //.where({'connections.sender_id' : '1', 'connections.receiver_id' : '2'})
-                 // .orWhere({'connections.sender_id' : '2', 'connections.receiver_id' : '1'});
-
-
-              //});       
+        getNonConnections(knex,senderId){
+            return knex
+            .from('fokul_users')
+            .select('*')
+            .join('connections','fokul_users.id', '=', "connections.receiver_id")
+            .where('connections.sender_id',senderId)
+            .orWhere('connections.receiver_id',senderId)
+           
           }
 
 }
