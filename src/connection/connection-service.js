@@ -25,13 +25,13 @@ const ConnectionService= {
         getNonConnections(knex,userId){
             
             knex
-              .select('*')
-              .from('fokul_users')
-              .whereNot({'fokul_users.id' : userId})
-              .whereNotExists(function(){
-                this.select('*').from('connections').where({'connections.sender_id' : 'fokul_users.id', 'connections.receiver_id' : userId})
+              //.select('*')
+              //.from('fokul_users')
+              //.whereNot({'fokul_users.id' : userId})
+              //.whereNotExists(function(){
+                select('*').from('connections').where({'connections.sender_id' : 'fokul_users.id', 'connections.receiver_id' : userId})
                   .orWhere({'connections.sender_id' : userId, 'connections.receiver_id' : 'fokul_users.id'});
-              });       
+              //});       
           
   
         
