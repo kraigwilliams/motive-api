@@ -179,7 +179,8 @@ thoughtRouter
       const thoughtId = req.params.thoughtId;
       const owner_id = req.user.id;
       console.log(thoughtId, 'thought id in share');
-      const { shared_userId, shared_level } = req.body;    
+      const { shared_userId, shared_level } = req.body; 
+      console.log(shared_userId, 'shared user id', shared_level, 'shared level');   
 
       const sharedThought = {
         owner_id: owner_id,
