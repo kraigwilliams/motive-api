@@ -22,16 +22,16 @@ const ConnectionService= {
             })
         },
 
-        getNonConnections(knex,senderId){
-            return
-            knex('fokul_users')
-           .select('*')
-        .whereRaw(`fokul_users.id != ${senderId}`)
-        .whereNotExists(function(){
-	this.select('*').from('connections').whereRaw(`connections.sender_id = fokul_users.id and connections.receiver_id =  ${senderId}`)
-.orWhere(`connections.sender_id = ${senderId} and connections.receiver_id = fokul_users.id`)
-        })
-
+        getNonConnections(knex,userId){
+            return knex
+              .select('*')
+              .from('fokul_users')
+              .whereNot({'fokul_users.id' : `${userId}`})
+              .whereNotExists(function(){
+                this.select('*').from('connections').where({'connections.sender_id' : 'fokul_users.id', 'connections.receiver_id' : `${userId}`})
+                  .orWhere({'connections.sender_id' : `${userId}`, 'connections.receiver_id' : 'fokul_users.id'});
+              });       
+          
   
         
 }
