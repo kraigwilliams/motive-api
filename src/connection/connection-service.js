@@ -68,7 +68,7 @@ const ConnectionService= {
             //.orWhereNot('connections.sender_id',senderId)
         
 
-        }
+        
 }
 
 
