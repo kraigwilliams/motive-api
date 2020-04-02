@@ -31,8 +31,10 @@ const ConnectionService= {
       .whereNot({'fu.id' : userId})
       .whereNotExists(function(){
         this.select('*').from('connections')
-          .whereRaw( '?? = ??', ['connections.sender_id', 'fu.id'], '?? = ??', ['connections.receiver_id', userId])
-          .orWhereRaw('?? = ??', ['connections.receiver_id', 'fu.id'], '?? = ??',['connections.sender_id', userId]);
+          .whereRaw( '?? = ??', ['connections.sender_id', 'fu.id'])
+          .orWhereRaw('?? = ??', ['connections.receiver_id', userId])
+          .orWhereRaw('?? = ??', ['connections.receiver_id', 'fu.id'])
+          .orWhereRaw( '?? = ??',['connections.sender_id', userId]);
       }); 
   }
 };
