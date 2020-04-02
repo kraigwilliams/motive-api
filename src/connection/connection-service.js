@@ -24,9 +24,9 @@ const ConnectionService= {
         getNonConnections(knex,senderId){
             return
             knex.raw(`select * from fokul_users
-            where fokul_users.id != 2
-            and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = 2)
-            or (connections.sender_id = 2 and connections.receiver_id = fokul_users.id))`)
+            where fokul_users.id != ${senderId}
+            and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${senderId})
+            or (connections.sender_id = ${senderId}  and connections.receiver_id = fokul_users.id))`)
         }
 
         // getNonConnectionsTable(knex,senderId){
