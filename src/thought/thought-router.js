@@ -56,7 +56,7 @@ thoughtRouter
         }
       }
 
-      if(thought_topic === 0 ){
+      if(thought_topic == 0 ){
         newThought.thought_topic=null
       } else {
         newThought.thought_topic = thought_topic
