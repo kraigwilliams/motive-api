@@ -177,18 +177,16 @@ thoughtRouter
 
     try {
       const thoughtId = req.params.thoughtId;
-      console.log(thoughtId, 'thought id in share');
-      const { shared_userId, shared_level } = req.body;
       const owner_id = req.user.id;
+      console.log(thoughtId, 'thought id in share');
+      const { shared_userId, shared_level } = req.body;    
 
       const sharedThought = {
-        owner_id,
-        shared_userId,
-        thought_id: thoughtId, 
+        owner_id: owner_id,
+        shared_userId: shared_userId,
+        thoughtId: thoughtId, 
         level: shared_level
       }
-
-
 
       ThoughtService.shareThought(
         knexInstance,
