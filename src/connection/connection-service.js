@@ -36,13 +36,3 @@ const ConnectionService= {
 };
 
 module.exports= ConnectionService;
-
-
-// .select('*')
-//   .from('fokul_users AS fu') 
-//   .whereNot({'fu.id' : userId})
-//   .whereNotExists(function(){
-//     this.select('*').from('connections')
-//       .whereRaw( '?? = ??', ['connections.sender_id', 'fu.id'], 'AND', /*'?? = ??', */'connections.receiver_id', userId)
-//       .orWhereRaw('?? = ??', ['connections.receiver_id', 'fu.id'], 'AND', /*'?? = ??', */'connections.sender_id', userId);
-//   }); 
