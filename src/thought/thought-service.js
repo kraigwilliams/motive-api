@@ -39,7 +39,9 @@ const ThoughtService= {
     return knex
       .from('thought_connections')
       .select('thought_connections.level')
-      .where({'shared_userId': userId , 'thought_id': thoughtId});
+      .where({'shared_userId': userId , 'thought_id': thoughtId})
+      .returning('*')
+      .first();
   },
 
   updateThought(knex,thoughtId,newNoteFields){
