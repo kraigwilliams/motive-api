@@ -20,10 +20,10 @@ const ConnectionService= {
   },
 
 
-  insertConnection(knex, senderId, recieverId) {
+  insertConnection(knex, senderId, receiverId) {
     return knex
       .into('connections')
-      .insert({sender_id: senderId, reciever_id: recieverId})  
+      .insert({sender_id: senderId, receiver_id: receiverId})  
       .returning('*')
       .then(rows => {
         return rows[0];
