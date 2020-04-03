@@ -44,7 +44,7 @@ const ThoughtService= {
       .first();
   },
 
-  updateThought(knex,thoughtId,newNoteFields){
+  updateThought(knex, thoughtId, newNoteFields){
     return knex('thought')
       .where('id',thoughtId)
       .update(newNoteFields)

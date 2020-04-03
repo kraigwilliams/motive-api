@@ -126,27 +126,34 @@ thoughtRouter
 
   .patch(jsonBodyParser,async (req,res,next)=>{
     try{
-    const knexInstance = req.app.get("db");
-  const {thought_title, thought_content, thought_topic}= req.body
-  const newThoughtFields={};
+      const knexInstance = req.app.get("db");
+      const {thought_title, thought_content, thought_topic}= req.body
+      const newThoughtFields={};
 
-  if(thought_title){
-    newThoughtFields.thought_title= thought_title
-          }
+      if(thought_title){
+        newThoughtFields.thought_title= thought_title
+      }
 
-  if(thought_topic){
-    newThoughtFields.thought_topic= thought_topic
-          }
+      if(thought_topic == 0){
+        newThoughtFields.thought_topic = null
+      } else {
+        newThoughtFields.thought_topic = thought_topic
+      }
 
-  if(thought_content){
-    newThoughtFields.thought_content= thought_content
-          }
-  console.log("newThoughtFields", newThoughtFields)
-  const updatedThought = await ThoughtService.updateThought(knexInstance,req.params.thoughtId, newThoughtFields)
-  console.log("updated Thought",updatedThought)
-  res
-  .status(200)
-  .json(updatedThought)
+      if(thought_content){
+        newThoughtFields.thought_content= thought_content
+      }
+      console.log("newThoughtFields", newThoughtFields)
+      
+      const updatedThought = await ThoughtService.updateThought(
+        knexInstance,
+        req.params.thoughtId, 
+        newThoughtFields
+      )
+      console.log("updated Thought",updatedThought)
+      res
+        .status(200)
+        .json(updatedThought)
     }
 
     catch(error){
