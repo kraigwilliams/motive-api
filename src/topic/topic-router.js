@@ -229,7 +229,7 @@ topicRouter
           knexInstance,
           sharedTopic
         )
-          .then(topicShared => {
+          .then(async (topicShared) => {
             console.log(topicShared, 'response from sharedTopic service')
             // take the topic that was just posted in the topic_connections table
             // get its id and share level
