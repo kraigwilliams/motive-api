@@ -238,7 +238,7 @@ topicRouter
             // get all thoughts in that topic 
             const thoughtsInTopic = TopicService.getAllThoughts(knexInstance, topicId)
             console.log(thoughtsInTopic)
-            // post all thoughts with that topic id in thought_connections table to be the share level of that topic just addedlevel 
+            // post all thoughts with that topic id in thought_connections table to be the share level of that topic just added
             thoughtsInTopic.map(thought => {
               const thoughtToInsert = {
                 owner_id,
