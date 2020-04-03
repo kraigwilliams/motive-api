@@ -11,7 +11,6 @@ const jsonBodyParser = express.json();
 connectionRouter
 .use(requireAuth)
 
-
 connectionRouter
   .route("/")
   .get(async (req, res, next) => {
