@@ -54,7 +54,6 @@ const TopicService = {
     return knex
       .from('thought')
       .select('thought.*')
-       
       .where('thought_topic', topicId);
   },
 
@@ -66,7 +65,32 @@ const TopicService = {
       .then(rows=>{
         return rows[0];
       });  
+  },
+
+  shareTopic(knex, sharedTopic) {
+    return knex
+      .insert(sharedTopic)
+      .into('topic_connections')
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
+  },
+
+  getTopicLevel(knex, topicId, userId) {
+    return knex 
+      .from('opic_connections')
+      .select('topic_connections.level')
+      .where({'shared_userId': userId , 'topic_id': topicId})
+      .returning('*')
+      .first();
   }
+
+  // insertTopicThoughtsShared(knex, sharedTopic){
+  //   return knex('topic_connections')
+  //     .into('topic_connections')
+  //     .
+  // }
 };
 
 module.exports = TopicService;

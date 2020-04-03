@@ -186,14 +186,15 @@ console.log("delete thought error start",error,"delete thought error end")
 
 topicRouter
   .route("/:topicId/level")
-  .get(async (res, req, next) => {
+  .get(async (req, res, next) => {
     const knexInstance = req.app.get('db')
     const topicId = Number(req.params.topicId)
     const userId = Number(req.user.id)
     try {
       const level = await TopicService.getTopicLevel(
         knexInstance,
-        topicId
+        topicId,
+        userId
       )
       if (!level) {
         return res.status(404).json({
@@ -206,5 +207,45 @@ topicRouter
       next(error)
     }
   })
+
+  topicRouter
+    .route('/share/:topicId')
+    .post(jsonBodyParser, async (req, res, next) => {
+      const knexInstance = req.app.get('db')
+
+      try {
+        const topicId = req.params.topicId
+        const owner_id = req.user.id
+        const { shared_userId, shared_level } = req.body
+
+        const sharedTopic = {
+          owner_id,
+          shared_userId,
+          topic_id : topicId,
+          level: shared_level
+        }
+
+        TopicService.sharedTopic(
+          knexInstance,
+          sharedTopic
+        )
+          .then(topicShared => {
+            console.log(topicShared)
+            // take the topic that was just posted in the topic_connections table
+            // get its id and share level
+            const topicId = topicShared.topic_id
+            const topicLevel = topicShared.level
+            // get all thoughts in that topic 
+            // update or post all thoughts with that topic id in thought_connections table to be the share level of that topic just addedlevel 
+          })
+        res 
+          .status(201)
+          .json(sharedTopic)
+      }
+      catch (error) {
+        console.log('topic router error sharing topic start', error, 'end of topic sharing error')
+      next(error);
+      }
+    })
 
 module.exports = topicRouter;
