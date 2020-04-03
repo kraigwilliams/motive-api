@@ -69,7 +69,7 @@ connectionRouter
         )
         console.log(addedConnection, 'added connection')
       }
-      res.status(200)
+      res.status(200).end()
     } catch(error) {
       console.log('connection router error adding connection start', error, 'end connection router error adding connection ')
       next(error);
