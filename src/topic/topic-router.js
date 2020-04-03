@@ -236,7 +236,8 @@ topicRouter
             const topicId = topicShared.topic_id
             const topicLevel = topicShared.level
             // get all thoughts in that topic 
-            const thoughtsInTopic = TopicService.getAllThoughts(knexInstance, topicId)
+            // \/ !!!!!! \/ !!!!!!!!! \/ start here!
+            const thoughtsInTopic = await TopicService.getAllThoughts(knexInstance, topicId)
             console.log(thoughtsInTopic, 'thoughts in topic')
             // post all thoughts with that topic id in thought_connections table to be the share level of that topic just added
             thoughtsInTopic.map(thought => {
