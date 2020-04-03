@@ -52,16 +52,23 @@ connectionRouter
       //  (connect.sender_id == connectionId 
       //   && connect.receiver_id == userId)
       // })
+
+      let filter = {
+        receiver_id: connectionId || userId,
+        sender_id: connectionId || userId
+      }
       const alreadyAdded = connections.filter(function(connect) {
-        if (connect.receiver_id == connectionId 
-          && connect.sender_id == userId) {
-            return true;
-          } else if (connect.sender_id == connectionId 
-          && connect.receiver_id == userId) {
-            return true
-          }  else {
-            return false
-          }
+        for (let key in filter) {
+          if (connect[key] == connectionId 
+            && connect[key]== userId) {
+              return true;
+            } else if (connect[key] == connectionId 
+            && connect[key] == userId) {
+              return true
+            }  else {
+              return false
+            }
+        }
        })
       console.log(alreadyAdded, 'already added connections')
 
