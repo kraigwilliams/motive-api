@@ -212,7 +212,7 @@ topicRouter
     .route('/share/:topicId')
     .post(jsonBodyParser, async (req, res, next) => {
       const knexInstance = req.app.get('db')
-
+      console.log('post topic share firing!');
       try {
         const topicId = req.params.topicId
         const owner_id = req.user.id
@@ -230,14 +230,14 @@ topicRouter
           sharedTopic
         )
           .then(topicShared => {
-            console.log(topicShared.topic_id)
+            console.log(topicShared, 'response from sharedTopic service')
             // take the topic that was just posted in the topic_connections table
             // get its id and share level
             const topicId = topicShared.topic_id
             const topicLevel = topicShared.level
             // get all thoughts in that topic 
             const thoughtsInTopic = TopicService.getAllThoughts(knexInstance, topicId)
-            console.log(thoughtsInTopic)
+            console.log(thoughtsInTopic, 'thoughts in topic')
             // post all thoughts with that topic id in thought_connections table to be the share level of that topic just added
             thoughtsInTopic.map(thought => {
               const thoughtToInsert = {
