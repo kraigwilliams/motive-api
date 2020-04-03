@@ -46,12 +46,23 @@ connectionRouter
       )
 
       console.log(connections, 'connections to filter through')
-      const alreadyAdded = !!connections.filter(connect => {
-       (connect.receiver_id == connectionId 
-        && connect.sender_id == userId) ||  
-       (connect.sender_id == connectionId 
-        && connect.receiver_id == userId)
-      })
+      // const alreadyAdded = !!connections.filter(connect => {
+      //  (connect.receiver_id == connectionId 
+      //   && connect.sender_id == userId) ||  
+      //  (connect.sender_id == connectionId 
+      //   && connect.receiver_id == userId)
+      // })
+      const alreadyAdded = connections.filter(function(connect) {
+        if (connect.receiver_id == connectionId 
+          && connect.sender_id == userId) {
+            return true;
+          } else if (connect.sender_id == connectionId 
+          && connect.receiver_id == userId) {
+            return true
+          }  else {
+            return false
+          }
+       })
       console.log(alreadyAdded, 'already added connections')
 
       if(!alreadyAdded) {
