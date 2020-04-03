@@ -59,13 +59,9 @@ connectionRouter
       }
       const alreadyAdded = connections.filter(function(connect) {
         for (let key in filter) {
-          if (connect[key] == connectionId 
-            && connect[key]== userId) {
+          if (connect[key] == filter[key]) {
               return true;
-            } else if (connect[key] == connectionId 
-            && connect[key] == userId) {
-              return true
-            }  else {
+            } else {
               return false
             }
         }
