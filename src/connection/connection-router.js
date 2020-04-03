@@ -39,13 +39,24 @@ connectionRouter
     try {
       const { connectionId } = req.body;
 
-    const addedConnection = await ConnectionService.insertConnection(
-      knexInstance, 
-      userId, 
-      connectionId
-    )
-    console.log(addedConnection, 'added connection')
-      res.status(204)
+      const connections = await ConnectionService.getAllConnections(
+        knexInstance, 
+        userId
+      )
+
+      const alreadyAdded = !!connections.filter(connect => {
+        connect.receiver_id == connectionId
+      })
+
+      if(!alreadyAdded) {
+        const addedConnection = await ConnectionService.insertConnection(
+          knexInstance, 
+          userId, 
+          connectionId
+        )
+        console.log(addedConnection, 'added connection')
+      }
+      res.status(200)
     } catch(error) {
       console.log('connection router error adding connection start', error, 'end connection router error adding connection ')
       next(error);
