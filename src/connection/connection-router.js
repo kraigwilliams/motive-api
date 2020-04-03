@@ -39,7 +39,7 @@ connectionRouter
     try {
       const { connectionId } = req.body;
 
-      const connections = await ConnectionService.getAllConnections(
+      const connections = await ConnectionService.getExistingConnections(
         knexInstance, 
         userId
       )

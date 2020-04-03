@@ -19,6 +19,13 @@ const ConnectionService= {
       });
   },
 
+  getExistingConnections(knex, userId){
+    return knex
+      .select('*')
+      .from('connections')
+      .where({sender_id: userId})
+      .orWhere({receiver_id : userId});
+  },
 
   insertConnection(knex, senderId, receiverId) {
     return knex
