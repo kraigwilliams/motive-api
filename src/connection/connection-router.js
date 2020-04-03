@@ -45,7 +45,7 @@ connectionRouter
       )
 
       const alreadyAdded = !!connections.filter(connect => {
-        connect.receiver_id == connectionId
+        connect.receiver_id == connectionId && connect.sender_id === userId
       })
       console.log(alreadyAdded, 'already added connections')
 
