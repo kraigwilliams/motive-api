@@ -57,7 +57,7 @@ connectionRouter
         receiver_id: connectionId || userId,
         sender_id: connectionId || userId
       }
-      const alreadyAdded = connections.filter(function(connect) {
+      const alreadyAdded = !!connections.filter(function(connect) {
         for (let key in filter) {
           if (connect[key] == filter[key]) {
               return true;
