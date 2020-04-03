@@ -225,7 +225,7 @@ topicRouter
           level: shared_level
         }
 
-        TopicService.sharedTopic(
+        TopicService.shareTopic(
           knexInstance,
           sharedTopic
         )
@@ -246,7 +246,7 @@ topicRouter
                 thought_id: thought.id,
                 level: topicLevel
               }
-              TopicService.insertSharedTopicThoughts(thoughtToInsert)
+              TopicService.insertSharedTopicThoughts(knexInstance, thoughtToInsert)
             })
           })
         res 
