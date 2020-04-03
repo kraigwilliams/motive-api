@@ -47,7 +47,7 @@ connectionRouter
       console.log(connections, 'connections to filter through')
 
       function isAdded(connect) {
-        if(connect.receiver_id == connectionId && connect.sender_if == userId) {
+        if(connect.receiver_id == connectionId && connect.sender_id == userId) {
           return true;
         } else if (connect.sender_id == connectionId && connect.receiver_id == userId) {
           return true
