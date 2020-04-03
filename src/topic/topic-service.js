@@ -79,7 +79,7 @@ const TopicService = {
 
   getTopicLevel(knex, topicId, userId) {
     return knex 
-      .from('opic_connections')
+      .from('topic_connections')
       .select('topic_connections.level')
       .where({'shared_userId': userId , 'topic_id': topicId})
       .returning('*')
