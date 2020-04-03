@@ -46,7 +46,7 @@ connectionRouter
       )
 
       console.log(connections, 'connections to filter through')
-      const alreadyAdded = connections.filter(connect => {
+      const alreadyAdded = connections.find(connect => {
        if ((connect.receiver_id == connectionId 
         && connect.sender_id == userId) ||  
        (connect.sender_id == connectionId 
