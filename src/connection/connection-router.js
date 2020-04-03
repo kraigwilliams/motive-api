@@ -56,12 +56,12 @@ connectionRouter
         }
       }
       console.log(isAdded, 'result of isAdded callback function')
-      
+
       const alreadyAdded = connections.find(isAdded)
 
       console.log(alreadyAdded, 'already added connections')
 
-      if(!alreadyAdded) {
+      if(alreadyAdded == undefined) {
         const addedConnection = await ConnectionService.insertConnection(
           knexInstance, 
           userId, 
