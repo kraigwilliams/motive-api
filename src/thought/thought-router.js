@@ -174,6 +174,7 @@ thoughtRouter
   .get(async (res, req, next) => {
     const knexInstance = req.app.get('db')
     const thoughtId = Number(req.params.thoughtId)
+    
     const userId = Number(req.user.id)
     try {
       const level = await ThoughtService.getThoughtLevel(
