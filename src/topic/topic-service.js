@@ -77,6 +77,16 @@ const TopicService = {
       });
   },
 
+  insertSharedTopicThoughts(knex, sharedTopicThought ) {
+    return knex 
+      .insert(sharedTopicThought)
+      .into('thought_connections')
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
+  },
+
   getTopicLevel(knex, topicId, userId) {
     return knex 
       .from('topic_connections')
