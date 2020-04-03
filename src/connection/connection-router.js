@@ -47,6 +47,7 @@ connectionRouter
       const alreadyAdded = !!connections.filter(connect => {
         connect.receiver_id == connectionId
       })
+      console.log(alreadyAdded, 'already added connections')
 
       if(!alreadyAdded) {
         const addedConnection = await ConnectionService.insertConnection(
