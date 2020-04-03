@@ -44,36 +44,21 @@ connectionRouter
         knexInstance, 
         userId
       )
-
       console.log(connections, 'connections to filter through')
-      const alreadyAdded = connections.find(connect => {
-       if ((connect.receiver_id == connectionId 
-        && connect.sender_id == userId) ||  
-       (connect.sender_id == connectionId 
-        && connect.receiver_id == userId)) {
+
+      function isAdded(connect) {
+        if(connect.receiver_id == connectionId && connect.sender_if == userId) {
           return true;
+        } else if (connect.sender_id == connectionId && connect.receiver_id == userId) {
+          return true
         } else {
           return false;
         }
-      })
+      }
+      console.log(isAdded, 'result of isAdded callback function')
+      
+      const alreadyAdded = connections.find(isAdded)
 
-      // let filter1 = {
-      //   receiver_id: connectionId,
-      //   sender_id:  userId
-      // }
-      // let filter2 = {
-      //   receiver_id: userId,
-      //   sender_id:  connectionId
-      // }
-      // const alreadyAdded = connections.filter(function(connect) {
-      //   for (let key in filter1) {
-      //     if (connect[key] != filter1[key]) {
-      //         return false;
-      //       } else {
-      //         return true
-      //       }
-      //   }
-      //  })
       console.log(alreadyAdded, 'already added connections')
 
       if(!alreadyAdded) {
