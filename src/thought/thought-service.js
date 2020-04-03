@@ -35,6 +35,13 @@ const ThoughtService= {
       .returning('*');
   },
 
+  getThoughtLevel(knex, thoughtId, userId) {
+    return knex
+      .from('thought_connections')
+      .select('thought_connections.level')
+      .where({'shared_userId': userId , 'thought_id': thoughtId});
+  },
+
   updateThought(knex,thoughtId,newNoteFields){
     return knex('thought')
       .where('id',thoughtId)

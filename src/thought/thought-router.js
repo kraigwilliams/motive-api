@@ -117,7 +117,6 @@ thoughtRouter
           error: { message: `This thought does not exist.` }
         });
       }
-
       res.json(serializeThought(thought));
     } catch (error) {
       console.log("get thought by Id error",error)
@@ -169,6 +168,32 @@ thoughtRouter
     next(error)
   }
 })
+
+thoughtRouter
+  .route("/:thoughtId/level")
+  .get(async (res, req, next) => {
+    const knexInstance = req.app.get('db')
+    const thoughtId = Number(req.params.thoughtId)
+    const userId = Number(req.user.id)
+    try {
+      const level = await ThoughtService.getThoughtLevel(
+        knexInstance,
+        thoughtId,
+        userId
+      )
+
+      console.log(level, 'level from thought connections')
+      if (!level) {
+        return res.status(404).json({
+          error: { message: `Error when finding shared thought in thought_connections.` }
+        });
+      }
+      res.json(level)
+    } catch(error) {
+      console.log('get shared thought by id error', error)
+      next(error)
+    }
+  })
 
 thoughtRouter
   .route('/share/:thoughtId')

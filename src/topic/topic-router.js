@@ -151,8 +151,6 @@ if(topic_title){
   newTopicFields.topic_title= topic_title
         }
 
-
-
 if(topic_content){
   newTopicFields.topic_content= topic_content
         }
@@ -185,5 +183,28 @@ console.log("delete thought error start",error,"delete thought error end")
 }
 }
 )
+
+topicRouter
+  .route("/:topicId/level")
+  .get(async (res, req, next) => {
+    const knexInstance = req.app.get('db')
+    const topicId = Number(req.params.topicId)
+    const userId = Number(req.user.id)
+    try {
+      const level = await TopicService.getTopicLevel(
+        knexInstance,
+        topicId
+      )
+      if (!level) {
+        return res.status(404).json({
+          error: { message: `Error when finding shared topic in topic_connections.` }
+        });
+      }
+      res.json(level)
+    } catch(error) {
+      console.log('get shared thought by id error', error)
+      next(error)
+    }
+  })
 
 module.exports = topicRouter;
