@@ -30,6 +30,28 @@ connectionRouter
         next(error);
     }
   })
+
+  connectionRouter
+  .route('/:userId')
+  .post(jsonBodyParser, async (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    const userId = Number(req.user.id)
+    try {
+      const { connectionId } = req.body;
+
+    ConnectionService.insertConnection(
+      knexInstance, 
+      userId, 
+      connectionId
+    )
+      res.status(201)
+    } catch(error) {
+      console.log('connection router error adding connection start', error, 'end connection router error adding connection ')
+      next(error);
+    }
+    
+  })
+
   connectionRouter
   .route("/new")
   .get(async (req, res, next) => {
