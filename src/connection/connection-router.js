@@ -69,13 +69,6 @@ connectionRouter
               return true
             }
         }
-        for(let key in filter2) {
-          if (connect[key] != filter2[key]) {
-            return false;
-          } else {
-            return true
-          }
-        }
        })
       console.log(alreadyAdded, 'already added connections')
 
