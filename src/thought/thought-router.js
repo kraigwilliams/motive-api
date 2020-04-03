@@ -158,10 +158,7 @@ thoughtRouter
     try{
     const knexInstance = req.app.get('db')
     await ThoughtService.deleteThought(knexInstance,req.params.thoughtId)
-    
       res.status(204).end()
-    
-  
   }
   catch(error){
     console.log("delete thought by id error start", error,"delete thought by id error end")
@@ -171,10 +168,10 @@ thoughtRouter
 
 thoughtRouter
   .route("/:thoughtId/level")
-  .get(async (res, req, next) => {
+  .get(async (req, res, next) => {
+    const thoughtId = req.params.thoughtId
     const knexInstance = req.app.get('db')
-    const thoughtId = Number(req.params.thoughtId)
-    
+    console.log(thoughtId, 'thought id')
     const userId = Number(req.user.id)
     try {
       const level = await ThoughtService.getThoughtLevel(
