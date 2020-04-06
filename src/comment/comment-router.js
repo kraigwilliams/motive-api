@@ -45,8 +45,9 @@ const serializeComment = comment => ({
   .post(jsonBodyParser, async (req, res, next) => {
     const knexInstance = req.app.get("db");
      const commenter_id = req.user.id
+     const thought_id = Number(req.params.thoughtId)
     try {
-      const { comment_content, comment_topic,thought_id} = req.body;
+      const { comment_content} = req.body;
       
       const newComment = {comment_content,thought_id,commenter_id };
 
@@ -75,7 +76,7 @@ console.log("created comment",createdComment)
         .json(createdComment);
     } 
     catch (error) {
-      console.log("comment router error",error)
+      console.log(" post comment error",error)
       next(error);
     }
   });
