@@ -66,7 +66,7 @@ const serializeComment = comment => ({
       
       
 console.log(newComment,"new comment")
-      const createdComment = await commentService.insertComment(knexInstance,newComment);
+      const createdComment = await CommentService.insertComment(knexInstance,newComment);
       
 console.log("created comment",createdComment)
       res
