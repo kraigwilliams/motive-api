@@ -100,11 +100,26 @@ topicRouter
     }
   });
 
+  topicRouter
+  .route("/shared")
+  .get(async (req, res, next) => {
+    const userId = Number(req.user.id);
+    try {
+      const knexInstance = req.app.get('db');
+      const sharedTopics = await TopicService.getSharedTopics(
+        knexInstance, 
+        userId
+      ) 
+      res.json(sharedTopics)
+    } 
+    catch(error) {
+      console.log("get shared topics by user id error start",error, "get shared topics by user id error end")
+        next(error);
+    }
+  })
+
 topicRouter
-
 .route("/:topicId")
-
-
 .get(async (req, res, next) => {
   try {
     const knexInstance = req.app.get("db");
@@ -122,11 +137,10 @@ topicRouter
     res.json(serializeTopic(topic));
   } 
   catch (error) {
-  console.log("get topic by id error start",error,"get topic by id error end")
+  console.log("get topic by id error start", error,"get topic by id error end")
     next(error);
   }
 })
-
 .patch(jsonBodyParser,async (req,res,next)=>{
   try{
   const knexInstance = req.app.get("db");
@@ -136,8 +150,6 @@ const newTopicFields={};
 if(topic_title){
   newTopicFields.topic_title= topic_title
         }
-
-
 
 if(topic_content){
   newTopicFields.topic_content= topic_content
@@ -156,7 +168,6 @@ res
   }
 })
 
-
 .delete(async(req,res,next)=>{
   try{
   const knexInstance = req.app.get('db')
@@ -172,5 +183,81 @@ console.log("delete thought error start",error,"delete thought error end")
 }
 }
 )
+
+topicRouter
+  .route("/:topicId/level")
+  .get(async (req, res, next) => {
+    const knexInstance = req.app.get('db')
+    const topicId = Number(req.params.topicId)
+    const userId = Number(req.user.id)
+    try {
+      const level = await TopicService.getTopicLevel(
+        knexInstance,
+        topicId,
+        userId
+      )
+      if (!level) {
+        return res.status(404).json({
+          error: { message: `Error when finding shared topic in topic_connections.` }
+        });
+      }
+      res.json(level)
+    } catch(error) {
+      console.log('get shared thought by id error', error)
+      next(error)
+    }
+  })
+
+  topicRouter
+    .route('/share/:topicId')
+    .post(jsonBodyParser, async (req, res, next) => {
+      const knexInstance = req.app.get('db')
+      console.log('post topic share firing!');
+      try {
+        const topicId = req.params.topicId
+        const owner_id = req.user.id
+        const { shared_userId, shared_level } = req.body
+
+        const sharedTopic = {
+          owner_id,
+          shared_userId,
+          topic_id : topicId,
+          level: shared_level
+        }
+
+        TopicService.shareTopic(
+          knexInstance,
+          sharedTopic
+        )
+          .then(async (topicShared) => {
+            console.log(topicShared, 'response from sharedTopic service')
+            // take the topic that was just posted in the topic_connections table
+            // get its id and share level
+            const topicId = topicShared.topic_id
+            const topicLevel = topicShared.level
+            // get all thoughts in that topic 
+            // \/ !!!!!! \/ !!!!!!!!! \/ start here!
+            const thoughtsInTopic = await TopicService.getAllThoughts(knexInstance, topicId)
+            console.log(thoughtsInTopic, 'thoughts in topic')
+            // post all thoughts with that topic id in thought_connections table to be the share level of that topic just added
+            thoughtsInTopic.map(thought => {
+              const thoughtToInsert = {
+                owner_id,
+                shared_userId,
+                thought_id: thought.id,
+                level: topicLevel
+              }
+              TopicService.insertSharedTopicThoughts(knexInstance, thoughtToInsert)
+            })
+          })
+        res 
+          .status(201)
+          .json(sharedTopic)
+      }
+      catch (error) {
+        console.log('topic router error sharing topic start', error, 'end of topic sharing error')
+      next(error);
+      }
+    })
 
 module.exports = topicRouter;

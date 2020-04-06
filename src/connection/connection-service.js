@@ -1,42 +1,55 @@
 const ConnectionService= {
 
-    getAllConnections(knex,senderId){
-        return knex
-        .from('fokul_users')
-        .select('*')
-        .join('connections','fokul_users.id', '=', "connections.receiver_id")
-        .where('connections.sender_id',senderId)
-        .orWhere('connections.receiver_id',senderId)
+  getAllConnections(knex,userId){
+    return knex.raw(
+      `SELECT
+        fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
+    FROM
+        fokul_users
+        INNER JOIN connections ON fokul_users.id = connections.receiver_id
+            OR fokul_users.id = connections.sender_id
+    WHERE
+        (connections.sender_id = ${userId} OR connections.receiver_id = ${userId})
+        AND NOT (fokul_users.id = ${userId} )
+        ;
+    `
+    )
+      .then(result => {
+        return result.rows;
+      });
+  },
 
-    },
+  getExistingConnections(knex, userId){
+    return knex
+      .select('*')
+      .from('connections')
+      .where({sender_id: userId})
+      .orWhere({receiver_id : userId});
+  },
 
+  insertConnection(knex, senderId, receiverId) {
+    return knex
+      .into('connections')
+      .insert({sender_id: senderId, receiver_id: receiverId})  
+      .returning('*')
+      .then(rows => {
+        return rows[0];
+      });
+  },
 
-    insertConnection(knex,senderID, recieverID) {
-        return knex
-            .into("connections")
-            .insert({sender_id: senderId, reciever_id: recieverId})
         
-            .returning('*')
-            .then(rows => {
-                return rows[0]
-            })
-        },
+  getNonConnections(knex,userId){
+    return knex.raw(
+      `select fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
+      from fokul_users
+      where fokul_users.id != ${userId}
+      and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${userId})
+      or (connections.sender_id = ${userId} and connections.receiver_id = fokul_users.id))`
+    )
+      .then(result => {
+        return result.rows;
+      }); 
+  },
+};
 
-        
-            getNonConnections(knex,userId){
-                return knex
-                let fokulId= knex.ref('fokul_users.id')
-                  .select('*')
-                  .from('fokul_users')
-                  .whereNot({'fokul_users.id' : userId})
-                  .whereNotExists(function(fokulId){
-                   return this.select('*').from('connections')
-                    .where({'connections.sender_id' : fokulId,
-                     'connections.receiver_id' : userId})
-//.orWhere({'connections.sender_id' : userId, 'connections.receiver_id' : 'fokul_users.id'});
-                  }); 
-          }
-
-}
-
-module.exports= ConnectionService
+module.exports= ConnectionService;
