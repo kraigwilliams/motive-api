@@ -1,7 +1,7 @@
 const CommentService={
 
 getComments(knex,thoughtId){
-return knex.from('comment').select('*')
+return knex.from('comments').select('*')
 .where('thought_id', thoughtId)
 },
 
