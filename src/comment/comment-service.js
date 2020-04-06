@@ -2,7 +2,11 @@ const CommentService={
 
 getComments(knex,thoughtId){
 return knex.from('comments').select('*')
-.where('thought_id', thoughtId)
+.join("fokul_users")
+
+.where({"comments.commenter_id":"fokul_users.id",
+"thought_id": thoughtId
+})
 },
 
 insertComment(knex,newComment){
