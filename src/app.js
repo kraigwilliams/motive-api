@@ -10,6 +10,7 @@ const userRouter= require('./user/user-router')
 const connectionRouter = require('./connection/connection-router')
 const topicRouter= require('./topic/topic-router')
 const thoughtRouter= require('./thought/thought-router')
+const commentRouter = require('./comment/comment-router')
 
 const app = express()
 
@@ -25,6 +26,7 @@ app.use('/api/topic', topicRouter)
 app.use('/api/thought', thoughtRouter)
 app.use('/api/user', userRouter)
 app.use('/api/connection',connectionRouter)
+app.use('/api/comments', commentRouter)
 
  app.get('/',(req,res)=>{
  res.status(200).send("Hello World.")
