@@ -33,8 +33,9 @@ const serializeComment = comment => ({
         knexInstance,
         thoughtId
       );
+      console.log("created comments",comments )
 
-      res.json(comments.map(serializeComment));
+      res.json(comments);
     } 
     catch (error) {
         console.log("Get comments error", error)
