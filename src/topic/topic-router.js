@@ -70,7 +70,7 @@ topicRouter
     console.log(alphaThoughts,"alphabetical thoughts")
         res.json(alphaThoughts)
    }
-   else if(req.params.sort_option==2){
+   else if(req.params.sort_option==1){
     const thoughts= await TopicService.getAllThoughts(knexInstance,req.params.topicId)
     console.log(thoughts,"this is all the thoughts")
           res.json(thoughts)
