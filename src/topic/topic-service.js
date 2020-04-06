@@ -59,7 +59,7 @@ const TopicService = {
       .orderBy('date_modified');
   },
 
-  getSortedThoughts(){
+  getSortedThoughts(knex,topicId){
     return knex
     .from('thought')
     .select('thought.*')
