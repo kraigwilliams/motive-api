@@ -56,7 +56,7 @@ const TopicService = {
       .from('thought')
       .select('thought.*')
       .where('thought_topic', topicId)
-      .orderBy('date_modified');
+      .orderBy('date_modified', 'desc');
   },
 
   updateTopic(knex,topicId,newTopicFields){
