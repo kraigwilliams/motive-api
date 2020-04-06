@@ -1,3 +1,4 @@
+/* eslint-disable strict */
 const ThoughtService= {
   getAllThoughts(knex,id){
     return knex.from('thought').select('*')

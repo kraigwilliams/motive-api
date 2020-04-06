@@ -1,3 +1,4 @@
+/* eslint-disable strict */
 const TopicService = {
   getAllTopics(knex, id) {
     return knex
@@ -54,7 +55,8 @@ const TopicService = {
     return knex
       .from('thought')
       .select('thought.*')
-      .where('thought_topic', topicId);
+      .where('thought_topic', topicId)
+      .orderBy('date_modified');
   },
 
   updateTopic(knex,topicId,newTopicFields){
