@@ -31,7 +31,7 @@ const serializeComment = comment => ({
     try {
       const comments = await CommentService.getComments(
         knexInstance,
-        topicId
+        thoughtId
       );
 
       res.json(comments.map(serializeComment));
