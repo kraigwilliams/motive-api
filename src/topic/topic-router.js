@@ -57,6 +57,36 @@ catch(error){
 }) 
 
 topicRouter
+.route("/:topicId/thoughts/:sort_option")
+
+
+.get(async (req,res,next)=>{
+  const knexInstance = req.app.get("db");
+  const userId = req.user.id;
+
+ try{
+   if(req.params.sort_option == 2){
+    const alphaThoughts= await TopicService.getSortedThoughts(knexInstance,req.params.topicId)
+    console.log(alphaThoughts,"alphabetical thoughts")
+        res.json(alphaThoughts)
+   }
+   else if(req.params.sort_option==2){
+    const thoughts= await TopicService.getAllThoughts(knexInstance,req.params.topicId)
+    console.log(thoughts,"this is all the thoughts")
+          res.json(thoughts)
+   }
+     
+ } 
+
+catch(error){
+console.log("alphabetical thoughts error",error)
+  next(error)
+}
+
+
+}) 
+
+topicRouter
   .route("/")
   .get(async (req, res, next) => {
     const knexInstance = req.app.get("db");

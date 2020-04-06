@@ -36,6 +36,61 @@ function makeUsersArray() {
   ]
 }
 
+function makeTopicsAndThoughts(user){
+const topics =[
+  {
+    id:,
+    topic_title:,
+    topic_content:,
+    topic_owner:,
+    level:
+  },
+  {
+    id:,
+    topic_title:,
+    topic_content:,
+    topic_owner:,
+    level:
+  },
+  {
+    id:,
+    topic_title:,
+    topic_content:,
+    topic_owner:,
+    level:
+  },
+]
+const thoughts= [
+{
+  id:,
+  thought_title:,
+  thought_content:,
+  thought_owner:,
+  thought_topic:,
+  level:
+
+},
+{
+  id:,
+  thought_title:,
+  thought_content:,
+  thought_owner:,
+  thought_topic:,
+  level:
+
+},
+{
+  id:,
+  thought_title:,
+  thought_content:,
+  thought_owner:,
+  thought_topic:,
+  level:
+
+},
+]
+return [topics,thougths]
+}
 
 
 /**
@@ -61,9 +116,9 @@ function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
       `TRUNCATE
-        "word",
-        "language",
-        "user"`
+        "fokul_users",
+        "topic",
+        "thought"`
       )
       .then(() =>
         Promise.all([
