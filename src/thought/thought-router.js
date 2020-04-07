@@ -127,7 +127,7 @@ thoughtRouter
   .patch(jsonBodyParser,async (req,res,next)=>{
     try{
       const knexInstance = req.app.get("db");
-      const {thought_title, thought_content, thought_topic}= req.body
+      const {thought_title, thought_content, thought_topic, date_modified}= req.body
       const newThoughtFields={};
 
       if(thought_title){
@@ -142,6 +142,10 @@ thoughtRouter
 
       if(thought_content){
         newThoughtFields.thought_content= thought_content
+      }
+
+      if (date_modified) {
+        newThoughtFields.date_modified = date_modified;
       }
       console.log("newThoughtFields", newThoughtFields)
       
@@ -202,6 +206,23 @@ thoughtRouter
 
 thoughtRouter
   .route('/share/:thoughtId')
+  .get(async (req, res, next) => {
+    const knexInstance = req.app.get('db');
+    try {
+      thoughtId = req.params.thoughtId
+
+      const sharedUsers = await ThoughtService.getSharedUsersById(
+        knexInstance,
+        thoughtId
+      )
+      console.log(sharedUsers, 'sharedUsers')
+      res.json(sharedUsers)
+    }
+    catch(error){
+      console.log('get shared users for a thought by id error', error)
+      next(error)
+    }
+  })
   .post(jsonBodyParser, async (req, res, next) => {
     const knexInstance = req.app.get('db');
 
