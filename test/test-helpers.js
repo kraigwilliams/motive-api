@@ -40,14 +40,14 @@ function makeUsersArray() {
   ]
 }
 
-function makeTopicsArray(user){
+function makeTopicsArray(users){
  return [
     {
 id:1,
 topic_title:'First Test Topic',
 topic_content:'Content of the first test topic',
 level:1,
-topic_owner:1,
+topic_owner:users[0].id,
 
 },
   {
@@ -55,7 +55,7 @@ topic_owner:1,
     topic_title:'Second Test Topic',
     topic_content:'Content of the second test topic',
     level:1,
-    topic_owner:1,
+    topic_owner:users[0].id,
    
   }
 
@@ -65,6 +65,7 @@ topic_owner:1,
 
 function makeExpectedTopic(users,topic){
   const owner= users.find(user=>user.id===topic.topic_owner)
+  
 }
 
 function makeTopicsFixtures(){
@@ -170,6 +171,7 @@ module.exports = {
   makeUsersArray,
   makeTopicsArray,
 makeTopicsFixtures,
+makeExpectedTopic,
   makeAuthHeader,
   cleanTables,
   seedUsers,
