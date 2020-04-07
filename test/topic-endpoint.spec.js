@@ -72,7 +72,7 @@ describe(`GET /api/topic/:topicId`,()=>{
         it(`responds with 404`,()=>{
             const fakeTopic = 123456
             return(supertest(app)
-            .get(`/api/articles/${fakeTopic}`)
+            .get(`/api/topic/${fakeTopic}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(404, { error: `Topic doesn't exist`})
             )
