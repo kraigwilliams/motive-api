@@ -36,7 +36,7 @@ LEFT JOIN fokul_users ON thought.thought_owner = fokul_users.id
 WHERE thought.id = ${thoughtId};`
       )
       .then((results) => {
-        return results.rows;
+        return results.rows[0];
       });
   },
 
