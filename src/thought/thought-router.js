@@ -117,7 +117,7 @@ thoughtRouter
           error: { message: `This thought does not exist.` }
         });
       }
-      res.json(serializeThought(thought));
+      res.json(thought);
     } catch (error) {
       console.log("get thought by Id error",error)
       next(error);

@@ -2,21 +2,25 @@ const knex = require('knex')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-/**
- * create a knex instance connected to postgres
- * @returns {knex instance}
- */
-function makeKnexInstance() {
-  return knex({
-    client: 'pg',
-    connection: process.env.TEST_DATABASE_URL
-  })
-}
+function makeShareLevel(){
+  return[
+    {
+      id:1,
+      level:"private",
+    active:false
+  }
+      ,
+      {id:2,
+        level:"collaboration",
+      active:false},
 
-/**
- * create a knex instance connected to postgres
- * @returns {array} of user objects
- */
+      {id:3, 
+        level:"shared", active:false},
+      {id:4,
+    level:"public", active:false}
+    
+  ]
+}
 function makeUsersArray() {
   return [
     {
@@ -24,7 +28,7 @@ function makeUsersArray() {
       username: 'admin',
       first_name: "Dunder",
       last_name:"Mifflin",
-    password: '1@Thinkful',
+    password: "1@Thinkful"
     },
     {
       id: 2,
@@ -36,69 +40,42 @@ function makeUsersArray() {
   ]
 }
 
-function makeTopicsAndThoughts(user){
-const topics =[
+function makeTopicsArray(user){
+ return [
+    {
+id:1,
+topic_title:'First Test Topic',
+topic_content:'Content of the first test topic',
+level:1,
+topic_owner:1,
+
+},
   {
-    id:,
-    topic_title:,
-    topic_content:,
-    topic_owner:,
-    level:
-  },
-  {
-    id:,
-    topic_title:,
-    topic_content:,
-    topic_owner:,
-    level:
-  },
-  {
-    id:,
-    topic_title:,
-    topic_content:,
-    topic_owner:,
-    level:
-  },
+    id:2,
+    topic_title:'Second Test Topic',
+    topic_content:'Content of the second test topic',
+    level:1,
+    topic_owner:1,
+   
+  }
+
 ]
-const thoughts= [
-{
-  id:,
-  thought_title:,
-  thought_content:,
-  thought_owner:,
-  thought_topic:,
-  level:
-
-},
-{
-  id:,
-  thought_title:,
-  thought_content:,
-  thought_owner:,
-  thought_topic:,
-  level:
-
-},
-{
-  id:,
-  thought_title:,
-  thought_content:,
-  thought_owner:,
-  thought_topic:,
-  level:
-
-},
-]
-return [topics,thougths]
 }
 
 
-/**
- * make a bearer token with jwt for authorization header
- * @param {object} user - contains `id`, `username`
- * @param {string} secret - used to create the JWT
- * @returns {string} - for HTTP authorization header
- */
+function makeExpectedTopic(users,topic){
+  const owner= users.find(user=>user.id===topic.topic_owner)
+}
+
+function makeTopicsFixtures(){
+  const testUsers = makeUsersArray()
+  const testTopics = makeTopicsArray(testUsers)
+  return {testUsers, testTopics}
+}
+
+
+
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.username,
@@ -116,18 +93,35 @@ function cleanTables(db) {
   return db.transaction(trx =>
     trx.raw(
       `TRUNCATE
-        "fokul_users",
-        "topic",
-        "thought"`
+    comments,
+    topic_connections,
+      thought_connections,
+      connections,
+      thought,
+      topic,
+      
+        fokul_users`
       )
       .then(() =>
         Promise.all([
-          trx.raw(`ALTER SEQUENCE word_id_seq minvalue 0 START WITH 1`),
-          trx.raw(`ALTER SEQUENCE language_id_seq minvalue 0 START WITH 1`),
-          trx.raw(`ALTER SEQUENCE user_id_seq minvalue 0 START WITH 1`),
-          trx.raw(`SELECT setval('word_id_seq', 0)`),
-          trx.raw(`SELECT setval('language_id_seq', 0)`),
-          trx.raw(`SELECT setval('user_id_seq', 0)`),
+          trx.raw(`ALTER SEQUENCE comments_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE topic_connections_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE thought_connections_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE connections_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE thought_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE topic_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE share_level_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`ALTER SEQUENCE fokul_users_id_seq minvalue 0 START WITH 1`),
+          trx.raw(`SELECT setval('comments_id_seq', 0)`),
+          trx.raw(`SELECT setval('topic_connections_id_seq', 0)`),
+          trx.raw(`SELECT setval('thought_connections_id_seq', 0)`),
+          trx.raw(`SELECT setval('connections_id_seq', 0)`),
+          trx.raw(`SELECT setval('thought_id_seq', 0)`),
+          trx.raw(`SELECT setval('topic_id_seq', 0)`),
+          trx.raw(`SELECT setval('share_level_id_seq', 0)`),
+          trx.raw(`SELECT setval('fokul_users_id_seq', 0)`),
+          
+          
         ])
       )
   )
@@ -140,62 +134,44 @@ function cleanTables(db) {
  * @returns {Promise} - when users table seeded
  */
 function seedUsers(db, users) {
+  //console.log("users",users)
   const preppedUsers = users.map(user => ({
     ...user,
     password: bcrypt.hashSync(user.password, 1)
   }))
   return db.transaction(async trx => {
-    await trx.into('user').insert(preppedUsers)
+    await trx.into('fokul_users').insert(preppedUsers)
 
     await trx.raw(
-      `SELECT setval('user_id_seq', ?)`,
+      `SELECT setval('fokul_users_id_seq', ?)`,
       [users[users.length - 1].id],
     )
   })
 }
 
-/**
- * seed the databases with words and update sequence counter
- * @param {knex instance} db
- * @param {array} users - array of user objects for insertion
- * @param {array} languages - array of languages objects for insertion
- * @param {array} words - array of words objects for insertion
- * @returns {Promise} - when all tables seeded
- */
-async function seedUsersLanguagesWords(db, users, languages, words) {
-  await seedUsers(db, users)
-
-  await db.transaction(async trx => {
-    await trx.into('language').insert(languages)
-    await trx.into('word').insert(words)
-
-    const languageHeadWord = words.find(
-      w => w.language_id === languages[0].id
+function seedTopicTable(db,users,topics){
+  // use a transaction to group the queries and auto rollback on any failure
+  console.log("the topics",topics)
+  return db.transaction(async trx => {
+    await seedUsers(trx, users)
+    await trx.into('topic').insert(topics)
+    // update the auto sequence to match the forced id values
+    await trx.raw(
+      `SELECT setval('topic_id_seq', ?)`,
+      [topics[topics.length - 1].id],
     )
-
-    await trx('language')
-      .update({ head: languageHeadWord.id })
-      .where('id', languages[0].id)
-
-    await Promise.all([
-      trx.raw(
-        `SELECT setval('language_id_seq', ?)`,
-        [languages[languages.length - 1].id],
-      ),
-      trx.raw(
-        `SELECT setval('word_id_seq', ?)`,
-        [words[words.length - 1].id],
-      ),
-    ])
+    // only insert comments if there are some, also update the sequence counter
+   
   })
 }
-
 module.exports = {
-  makeKnexInstance,
+  seedTopicTable,
+  //makeKnexInstance,
   makeUsersArray,
-
+  makeTopicsArray,
+makeTopicsFixtures,
   makeAuthHeader,
   cleanTables,
   seedUsers,
-  seedUsersLanguagesWords,
+  
 }

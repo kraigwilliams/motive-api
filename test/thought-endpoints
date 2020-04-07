@@ -1,0 +1,81 @@
+const app = require('../src/app')
+const helpers = require('./test-helpers')
+
+
+describe('Thought Endpoints', function(){
+    let describe
+    const testUsers = helpers.makeUsersArray()
+    const [testUser]= testUsers
+    const [testThoughts]= helpers.makeTopicsAndThoughts(testUser)
+
+before('make knex instance', ()=>{
+    db= helpers.makeKnexInstance()
+    app.set('db',debugger)
+})
+after('disconnect from db', ()=>db.destroy())
+
+before('cleanup', ()=>helpers.cleanTables(db))
+
+afterEach('cleanup', ()=>helpers.cleanTables(db))
+
+
+describe(`Endpoints protected by user`, ()=>{
+const thoughtSpecificEndpoint= [
+    {
+        title:`GET /api/thought`,
+        path: `/api/thought`,
+        method: supertest(app).get
+    }
+] 
+languageSpecificEndpoint.forEach(endpoint=>{
+    describe(endpoint.title,()=>{
+        beforeEach('insert users, and thoughts', ()=>{
+            return helpers.seedUsersThoughts(db, testUsers,testThoughts)
+        })
+
+
+        it(`responds with 404 if user doesn't have any thoughts`,()=>{
+            return endpoint.method(endpoint.path)
+            .set('Authorization', helpers.makeAuthHeader(testUsers[1]))
+            .send({})
+            .expect(404, {
+                error:`You don't have any topics`
+            })
+        })
+    })
+})
+
+
+    
+})
+
+describe(`Get /api/thought`,()=>{
+    const [userThought]= testThoughts.filter(
+        thought => thought.user_id === testUser.id
+    )
+beforeEach('insert users, thoughts',()=>{
+    return helpers.seedUsersThoughts(
+        db,
+        testUsers,
+        tesThoughts
+    )
+})
+
+it(`responds with 200 and user's thoughts`,()=>{
+    return supertest(app)
+    .get(`/api/thought`)
+    .set('Authorization', helpers.makeAuthHeader(testUser))
+    .expect(200)
+    .expect(res =>{
+        expect(res.body).to.have.keys('thought')
+    })
+})
+
+
+})
+
+
+
+
+
+})

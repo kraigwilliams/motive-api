@@ -1,15 +1,17 @@
+const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
 
-describe('Protected Endpoints', function () {
+describe('Protected endpoints', function() {
   let db
 
-  const testUsers = helpers.makeUsersArray()
-  const [testUser] = testUsers
-  const [testLanguages, testWords] = helpers.makeLanguagesAndWords(testUser)
+  const {testUsers, testTopics} = helpers.makeTopicsFixtures()
 
   before('make knex instance', () => {
-    db = helpers.makeKnexInstance()
+    db = knex({
+      client: 'pg',
+      connection: process.env.TEST_DATABASE_URL,
+    })
     app.set('db', db)
   })
 
@@ -19,36 +21,22 @@ describe('Protected Endpoints', function () {
 
   afterEach('cleanup', () => helpers.cleanTables(db))
 
-  beforeEach('insert users, languages and words', () => {
-    return helpers.seedUsersLanguagesWords(
+  beforeEach('insert topics', () =>
+    helpers.seedTopicTable(
       db,
       testUsers,
-      testLanguages,
-      testWords,
+      testTopics
+  
     )
-  })
+  )
 
   const protectedEndpoints = [
     {
-      name: 'GET /api/topic',
-      path: '/api/language',
+      name: 'GET /api/topic/:topicId',
+      path: '/api/topic/1',
       method: supertest(app).get,
-    },
-    {
-      name: 'GET /api/thought',
-      path: '/api/language/head',
-      method: supertest(app).get,
-    },
-    {
-      name: 'POST /api/topic',
-      path: '/api/language/guess',
-      method: supertest(app).post,
-    },
-    {
-      name: 'PUT /api/auth/token',
-      path: '/api/auth/token',
-      method: supertest(app).put,
-    },
+    }
+    
   ]
 
   protectedEndpoints.forEach(endpoint => {
