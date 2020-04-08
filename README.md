@@ -8,24 +8,24 @@ Or the live product [here](https://folkul.now.sh/)
 - Fokul is a place where you can privately gather your thoughts - this can be small ideas to the next greatest invention. You can connect to other users and then share this idea with them - getting criticism, feedback and overall collaboration.
 
 ## Local dev setup 
-bash
-mv example.env .env
-createuser dunder_mufflin //if you don't have one
-createdb -U dunder_mufflin motive
-createdb -U dunder_mufflin motive-test
+bash <br />
+mv example.env .env <br />
+createuser dunder_mufflin //if you don't have one <br />
+createdb -U dunder_mufflin motive <br />
+createdb -U dunder_mufflin motive-test <br />
 
-f your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately.
-bash
-npm install
-npm run migrate
+If your `dunder-mifflin` user has a password be sure to set it in `.env` for all appropriate fields. Or if using a different user, update appropriately. <br />
+bash <br />
+npm install <br />
+npm run migrate <br />
 env MIGRATION_DATBASE_NAME=motive-test npm run migrate
 
 
 ## Scripts 
-Start the application `npm start`
-Start nodemon for the application `npm run dev`
-Run the tests mode `npm test`
-Run the migrations up `npm run migrate`
+Start the application `npm start` <br />
+Start nodemon for the application `npm run dev` <br />
+Run the tests mode `npm test` <br />
+Run the migrations up `npm run migrate` <br />
 Run the migrations down `npm run migrate -- 0`
 
 ## Routes 
