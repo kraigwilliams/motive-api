@@ -121,13 +121,35 @@ and id, username, first_name and last_name from the FOKUL_USERS table
 - Returns: all thought within a specific topic in specific order 
 
 ### Comment Endpoints  `/api/comments`
+#### GET `/:thoughtId`
+- Hit when getting all comments for a specific thought 
+- Takes the thoughtId from the params
+- Returns: all comments on that thought
+- Comment consists of: id, thought_id, commenter_id, comment_content, date_posted
+
+#### POST `/:thoughtId`
+- Hit when posting a new comment on a specific thought
+- Takes the thoughtId from the params and the comment_content and the user.id (commenter_id) from the request body 
+- Posts the comment in the comment table
+- Returns: the comment just created
 
 ### Connection Endpoints `/api/connection`
+#### GET 
+- Hit when getting all existing connections for a specific user
+- Takes the user id from the request body 
+- Returns: all connections - this includes users that the logged in user has added AND the all users that added the logged in user 
 
+#### POST `/:userId`
+- Hit when a user adds a new connection from the connections page
+- Takes the user id and the connectionId from the request body 
+- The connectionId is the id of the user they want to connection with
+- Returns: message saying 'Succesfully added connection'
 
-
-
-
+#### GET `/new`
+- This is getting all users the logged in user is NOT connected with for the search on the connections page 
+- Takes the user id from the request body 
+- Returns: An array of user objects 
+- A user object contains: id, first_name, last_name and username
 
 - - - -
 
