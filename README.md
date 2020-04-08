@@ -78,17 +78,58 @@ and id, username, first_name and last_name from the FOKUL_USERS table
 - Returns: the shared thought
 
 ### Topic Endpoints `/api/topic`
+#### GET 
+- Getting all topicss for a specific user 
+- Request body: user id 
+- Returns: an array of topic objects 
+- A topic consists of: id, topic_title, topic_content, topic_owner,  level
+
+#### POST 
+- Hit when creating/posting a new topic 
+- Request body: user id, topic_title, topict_content
+- Returns: the created topic (client uses this topic id to push the user to the next page)
+
+#### GET `/:topicId`
+- Getting specific details for the expanded topic view 
+- Uses topicId from params 
+- Returns: topic id, topic_title, topict_content, topic_owner, level
+
+#### DELETE `/:topicId`
+- Takes a topic id and removes it from the database
+- Sends status of 204 
+
+#### GET `/:topicId/level` 
+- Hit when getting the "share" level of topic 
+- This level can be 1 (private), 2 (collaboaration), 3 (shared)
+- Takes the topicId from the params and returns the level for that topic
+
+#### POST `/share/:topicId`
+- Hit when sharing a topic with a user 
+- Take the topicId from the params and the user id from the request body 
+- Returns: the shared topic
+
+#### GET `/:topicId/thoughts`
+- Hit when in the expanded topic view, to display all thoughts within that topic
+- Take the topicId from the params and the user id from the request body 
+- Returns: all thoughts within a specific topic 
+
+#### GET `/:topicId/thoughts/:sort_option`
+- Hit when sorting the thought in the topic view 
+- Takes the topicId and sort_option from the params 
+- sort_option can be 1 (recent modified) or 2 (alphabetical)
+- Orders the thoughts via knex query
+- Returns: all thought within a specific topic in specific order 
 
 ### Comment Endpoints  `/api/comments`
 
-## Connection Endpoints `/api/connection`
+### Connection Endpoints `/api/connection`
 
 
 
 
 
 
-
+- - - -
 
 # Express Boilerplate!
 
