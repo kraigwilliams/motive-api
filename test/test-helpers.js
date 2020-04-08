@@ -62,6 +62,35 @@ topic_owner:users[0].id,
 
 ]
 }
+function makeThoughtsArray(users){
+  return[
+   {
+     id:1,
+     thought_title:'My first thought',
+     thought_content:'Content of my first thought',
+     thought_owner:1,
+     //level:1,
+     thought_topic:0
+     
+
+
+   },
+   {
+    id:2,
+    thought_title:'My second thought',
+    thought_content:'Content of my second thought',
+    thought_owner:1,
+    //level:1,
+    thought_topic:0
+    
+
+
+  }
+  
+
+  ]
+
+}
 
 
 function makeExpectedTopic(users,topic){
@@ -74,12 +103,29 @@ function makeExpectedTopic(users,topic){
   }
 }
 
+function makeExpectedThought(users,thought){
+  return{
+    id:thought.id,
+    thought_title:thought.thought_title,
+    thought_content:thought.thought_content,
+    thought_owner:thought.thought_owner,
+    //level:1,
+    thought_topic:0,
+    
+  }
+}
+
 function makeTopicsFixtures(){
   const testUsers = makeUsersArray()
   const testTopics = makeTopicsArray(testUsers)
   return {testUsers, testTopics}
 }
 
+function makeThoughtsFixtures(){
+  const testUsers = makeUsersArray()
+  const testThoughts= makeThoughtsArray(testUsers)
+  return {testUsers, testThoughts}
+}
 
 
 
@@ -174,13 +220,35 @@ function seedTopicTable(db,users,topics){
    
   })
 }
+
+function seedThoughtTable(db,users,thoughts){
+  // use a transaction to group the queries and auto rollback on any failure
+  console.log("the thoughts",thoughts)
+  return db.transaction(async trx => {
+    await seedUsers(trx, users)
+    await trx.into('thought').insert(thoughts)
+    // update the auto sequence to match the forced id values
+    await trx.raw(
+      `SELECT setval('thought_id_seq', ?)`,
+      [thoughts[thoughts.length - 1].id],
+    )
+    
+   
+  })
+}
+
+
 module.exports = {
   seedTopicTable,
+  seedThoughtTable,
   //makeKnexInstance,
   makeUsersArray,
   makeTopicsArray,
+  makeThoughtsArray,
 makeTopicsFixtures,
+makeThoughtsFixtures,
 makeExpectedTopic,
+makeExpectedThought,
   makeAuthHeader,
   cleanTables,
   seedUsers,

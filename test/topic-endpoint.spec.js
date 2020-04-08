@@ -12,7 +12,7 @@ const{
     testTopics
 }= helpers.makeTopicsFixtures()
 
-const blackTopics =[]
+
 before('make knex instance', ()=>{
     db = knex({
         client:'pg',
