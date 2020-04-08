@@ -1,25 +1,22 @@
 const express = require("express");
 const path = require("path");
 const xss = require("xss");
-const ThoughtService = require("./thought-service")
+const ThoughtService = require("./thought-service");
 const { requireAuth } = require("../middleware/jwt-auth");
 
 const thoughtRouter = express.Router();
 
 const jsonBodyParser = express.json();
 
-const serializeThought = thought => ({
+const serializeThought = (thought) => ({
   id: Number(thought.id),
   thought_title: xss(thought.thought_title),
   thought_content: xss(thought.thought_content),
-  thought_owner:Number(thought.thought_owner),
-  thought_topic:Number(thought.thought_topic)
-  
-
+  thought_owner: Number(thought.thought_owner),
+  thought_topic: Number(thought.thought_topic),
 });
 
-thoughtRouter
-.use(requireAuth)
+thoughtRouter.use(requireAuth);
 
 thoughtRouter
   .route("/")
@@ -34,8 +31,7 @@ thoughtRouter
       );
 
       res.json(thoughts.map(serializeThought));
-    } 
-    catch (error) {
+    } catch (error) {
       next(error);
     }
   })
@@ -44,63 +40,62 @@ thoughtRouter
     const knexInstance = req.app.get("db");
 
     try {
-      const { thought_title, thought_content ,thought_topic} = req.body;
-      
+      const { thought_title, thought_content, thought_topic } = req.body;
+
       const newThought = { thought_title, thought_content };
 
       for (const [key, value] of Object.entries(newThought)) {
         if (value == null) {
           return res.status(400).json({
-            error: { message: `Missing '${key}' in request body` }
+            error: { message: `Missing '${key}' in request body` },
           });
         }
       }
 
-      if(thought_topic == 0 ){
-        newThought.thought_topic=null
+      if (thought_topic == 0) {
+        newThought.thought_topic = null;
       } else {
-        newThought.thought_topic = thought_topic
-      };
-       
-      console.log("thought user id", req.user.id)
+        newThought.thought_topic = thought_topic;
+      }
+
+      console.log("thought user id", req.user.id);
       newThought.thought_owner = req.user.id;
-      
-      console.log(newThought,"new thought")
+
+      console.log(newThought, "new thought");
       const createdThought = await ThoughtService.insertThought(
         knexInstance,
         newThought
       );
-      
-      console.log("created thought",createdThought)
+
+      console.log("created thought", createdThought);
       res
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${createdThought.id}`))
         .json(createdThought);
-    } 
-    catch (error) {
-      console.log("/thought router error",error)
+    } catch (error) {
+      console.log("/thought router error", error);
       next(error);
     }
   });
 
-
-  thoughtRouter
-  .route("/shared")
-  .get(async (req, res, next) => {
-    const userId = Number(req.user.id);
-    try {
-      const knexInstance = req.app.get('db');
-      const sharedThoughts = await ThoughtService.getSharedThoughts(
-        knexInstance, 
-        userId
-      ) 
-      res.json(sharedThoughts)
-    } 
-    catch(error) {
-      console.log("get shared thoughts by user id error start",error, "get shared thoughts by user id error end")
-        next(error);
-    }
-  });
+thoughtRouter.route("/shared").get(async (req, res, next) => {
+  const userId = Number(req.user.id);
+  try {
+    const knexInstance = req.app.get("db");
+    const sharedThoughts = await ThoughtService.getSharedThoughts(
+      knexInstance,
+      userId
+    );
+    res.json(sharedThoughts);
+  } catch (error) {
+    console.log(
+      "get shared thoughts by user id error start",
+      error,
+      "get shared thoughts by user id error end"
+    );
+    next(error);
+  }
+});
 
 thoughtRouter
   .route("/:thoughtId")
@@ -114,142 +109,149 @@ thoughtRouter
       //console.log("topic", topic, "then", req.params.thoughtId, "req.params");
       if (!thought) {
         return res.status(404).json({
-          error: { message: `This thought does not exist.` }
+          error: { message: `This thought does not exist.` },
         });
       }
+      console.log(thought, "thought");
       res.json(thought);
     } catch (error) {
-      console.log("get thought by Id error",error)
+      console.log("get thought by Id error", error);
       next(error);
     }
   })
 
-  .patch(jsonBodyParser,async (req,res,next)=>{
-    try{
+  .patch(jsonBodyParser, async (req, res, next) => {
+    try {
       const knexInstance = req.app.get("db");
-      const {thought_title, thought_content, thought_topic, date_modified}= req.body
-      const newThoughtFields={};
+      const {
+        thought_title,
+        thought_content,
+        thought_topic,
+        date_modified,
+      } = req.body;
+      const newThoughtFields = {};
 
-      if(thought_title){
-        newThoughtFields.thought_title= thought_title
+      if (thought_title) {
+        newThoughtFields.thought_title = thought_title;
       }
 
-      if(thought_topic == 0){
-        newThoughtFields.thought_topic = null
+      if (thought_topic == 0) {
+        newThoughtFields.thought_topic = null;
       } else {
-        newThoughtFields.thought_topic = thought_topic
+        newThoughtFields.thought_topic = thought_topic;
       }
 
-      if(thought_content){
-        newThoughtFields.thought_content= thought_content
+      if (thought_content) {
+        newThoughtFields.thought_content = thought_content;
       }
 
       if (date_modified) {
         newThoughtFields.date_modified = date_modified;
       }
-      console.log("newThoughtFields", newThoughtFields)
-      
+      console.log("newThoughtFields", newThoughtFields);
+
       const updatedThought = await ThoughtService.updateThought(
         knexInstance,
-        req.params.thoughtId, 
+        req.params.thoughtId,
         newThoughtFields
-      )
-      console.log("updated Thought",updatedThought)
-      res
-        .status(200)
-        .json(updatedThought)
-    }
-
-    catch(error){
-    console.log("patch thought error",error)
-      next(error)
+      );
+      console.log("updated Thought", updatedThought);
+      res.status(200).json(updatedThought);
+    } catch (error) {
+      console.log("patch thought error", error);
+      next(error);
     }
   })
-  .delete(async( req,res,next)=>{
-    try{
-    const knexInstance = req.app.get('db')
-    await ThoughtService.deleteThought(knexInstance,req.params.thoughtId)
-      res.status(204).end()
-  }
-  catch(error){
-    console.log("delete thought by id error start", error,"delete thought by id error end")
-    next(error)
-  }
-})
-
-thoughtRouter
-  .route("/:thoughtId/level")
-  .get(async (req, res, next) => {
-    const thoughtId = req.params.thoughtId
-    const knexInstance = req.app.get('db')
-    console.log(thoughtId, 'thought id')
-    const userId = Number(req.user.id)
+  .delete(async (req, res, next) => {
     try {
-      const level = await ThoughtService.getThoughtLevel(
-        knexInstance,
-        thoughtId,
-        userId
-      )
-
-      console.log(level, 'level from thought connections')
-      if (!level) {
-        return res.status(404).json({
-          error: { message: `Error when finding shared thought in thought_connections.` }
-        });
-      }
-      res.json(level)
-    } catch(error) {
-      console.log('get shared thought by id error', error)
-      next(error)
+      const knexInstance = req.app.get("db");
+      await ThoughtService.deleteThought(knexInstance, req.params.thoughtId);
+      res.status(204).end();
+    } catch (error) {
+      console.log(
+        "delete thought by id error start",
+        error,
+        "delete thought by id error end"
+      );
+      next(error);
     }
-  })
+  });
+
+thoughtRouter.route("/:thoughtId/level").get(async (req, res, next) => {
+  const thoughtId = req.params.thoughtId;
+  const knexInstance = req.app.get("db");
+  console.log(thoughtId, "thought id");
+  const userId = Number(req.user.id);
+  try {
+    const level = await ThoughtService.getThoughtLevel(
+      knexInstance,
+      thoughtId,
+      userId
+    );
+
+    console.log(level, "level from thought connections");
+    if (!level) {
+      return res.status(404).json({
+        error: {
+          message: `Error when finding shared thought in thought_connections.`,
+        },
+      });
+    }
+    res.json(level);
+  } catch (error) {
+    console.log("get shared thought by id error", error);
+    next(error);
+  }
+});
 
 thoughtRouter
-  .route('/share/:thoughtId')
+  .route("/share/:thoughtId")
   .get(async (req, res, next) => {
-    const knexInstance = req.app.get('db');
+    const knexInstance = req.app.get("db");
     try {
-      thoughtId = req.params.thoughtId
+      thoughtId = req.params.thoughtId;
 
       const sharedUsers = await ThoughtService.getSharedUsersById(
         knexInstance,
         thoughtId
-      )
-      console.log(sharedUsers, 'sharedUsers')
-      res.json(sharedUsers)
-    }
-    catch(error){
-      console.log('get shared users for a thought by id error', error)
-      next(error)
+      );
+      console.log(sharedUsers, "sharedUsers");
+      res.json(sharedUsers);
+    } catch (error) {
+      console.log("get shared users for a thought by id error", error);
+      next(error);
     }
   })
   .post(jsonBodyParser, async (req, res, next) => {
-    const knexInstance = req.app.get('db');
+    const knexInstance = req.app.get("db");
 
     try {
       const thoughtId = req.params.thoughtId;
       const owner_id = req.user.id;
-      console.log(thoughtId, 'thought id in share');
-      const { shared_userId, shared_level } = req.body; 
-      console.log(shared_userId, 'shared user id', shared_level, 'shared level');   
+      console.log(thoughtId, "thought id in share");
+      const { shared_userId, shared_level } = req.body;
+      console.log(
+        shared_userId,
+        "shared user id",
+        shared_level,
+        "shared level"
+      );
 
       const sharedThought = {
         owner_id: owner_id,
         shared_userId: shared_userId,
-        thought_id: thoughtId, 
-        level: shared_level
-      }
+        thought_id: thoughtId,
+        level: shared_level,
+      };
 
-      ThoughtService.shareThought(
-        knexInstance,
-        sharedThought
-      )
-      res
-        .status(201)
-        .json(sharedThought);
-    } 
-    catch (error) {
-      console.log('thought router error sharing thought start', error, 'end of thought sharing error')
+      ThoughtService.shareThought(knexInstance, sharedThought);
+      res.status(201).json(sharedThought);
+    } catch (error) {
+      console.log(
+        "thought router error sharing thought start",
+        error,
+        "end of thought sharing error"
+      );
       next(error);
     }
   });
