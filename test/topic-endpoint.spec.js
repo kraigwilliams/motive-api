@@ -12,7 +12,7 @@ const{
     testTopics
 }= helpers.makeTopicsFixtures()
 
-
+const blackTopics =[]
 before('make knex instance', ()=>{
     db = knex({
         client:'pg',
@@ -26,10 +26,21 @@ before('cleanup',()=> helpers.cleanTables(db))
 afterEach('cleanup', ()=>helpers.cleanTables(db))
 
 describe(`GET /api/topic`, ()=>{
+
     context(`Given no topics`, ()=>{
+        beforeEach('insert topics',()=>
+        helpers.seedUsers(
+            db,
+            testUsers
+            
+        )
+    
+)
         it(`responds with 200 and an empty list`,()=>{
             return supertest(app)
+            
             .get('/api/topic')
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200,[])
         })
     })
@@ -52,7 +63,9 @@ describe(`GET /api/topic`, ()=>{
                 topic
             ))
             return supertest(app)
+            
             .get('/api/topic')
+            .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
             .expect(200,expectedTopics)
     })
 })
@@ -72,9 +85,11 @@ describe(`GET /api/topic/:topicId`,()=>{
         it(`responds with 404`,()=>{
             const fakeTopic = 123456
             return(supertest(app)
+            
             .get(`/api/topic/${fakeTopic}`)
             .set('Authorization', helpers.makeAuthHeader(testUsers[0]))
-            .expect(404, { error: `Topic doesn't exist`})
+            .expect(404, {
+                error: { message: `This topic does not exist.` }})
             )
         })
 

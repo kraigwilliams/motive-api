@@ -1,6 +1,7 @@
 const knex = require('knex')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const config = require('../src/config')
 
 function makeShareLevel(){
   return[
@@ -64,8 +65,13 @@ topic_owner:users[0].id,
 
 
 function makeExpectedTopic(users,topic){
-  const owner= users.find(user=>user.id===topic.topic_owner)
-  
+  //const owner= users.find(user=>user.id===topic.topic_owner)
+  return{
+    id:topic.id,
+    topic_owner:topic.topic_owner,
+    topic_content:topic.topic_content,
+    topic_title:topic.topic_title
+  }
 }
 
 function makeTopicsFixtures(){
@@ -78,10 +84,13 @@ function makeTopicsFixtures(){
 
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+  console.log("jwt user",user)
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.username,
     algorithm: 'HS256',
+    expiresIn: config.JWT_EXPIRY
   })
+  console.log("token start",token, "token end")
   return `Bearer ${token}`
 }
 
