@@ -9,7 +9,6 @@ describe("Thought Endpoints", function () {
     testThoughts,
     testComments,
   } = helpers.makeThoughtsFixtures();
-  console.log("&&&&&&&&", testComments, testUsers);
 
   before("make knex instance", () => {
     db = knex({
@@ -75,8 +74,6 @@ describe("Thought Endpoints", function () {
     context("Given there are comments for thought in the database", () => {
       // before(()=>  helpers.seedUsers(db,testUsers))
 
-      console.log("final final final", testComments);
-
       beforeEach("insert thoughts", () =>
         helpers.seedThoughtTable(db, testUsers, testThoughts)
       );
@@ -86,9 +83,10 @@ describe("Thought Endpoints", function () {
 
       it("responds with 200 and the specified comments", () => {
         const thoughtId = 1;
-        console.log("test comments", testComments);
-        const expectedComments = helpers.makeExpectedComments(thoughtId,testComments);
-        console.log("expected comments", expectedComments);
+        const expectedComments = helpers.makeExpectedComments(
+          thoughtId,
+          testComments
+        );
         return supertest(app)
           .get(`/api/thought/1`)
           .set("Authorization", helpers.makeAuthHeader(testUsers[0]))

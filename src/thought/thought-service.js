@@ -40,18 +40,6 @@ WHERE thought.id = ${thoughtId};`
       });
   },
 
-  // getById(knex, thoughtId) {
-  //   return knex
-  //     .select(
-  //       'thought.id, thought.thought_title, thought.thought_owner, thought.thought_topic, thought.level, thought.date_modified, fokul_users.username, fokul_users.first_name, fokul_users.last_name'
-  //     )
-  //     .from('thought')
-  //     .join('fokul_users', 'thought.thought_owner', '=', 'fokul_users.id')
-  //     .where('thought.id', thoughtId)
-  //     .first()
-  //     .returning('*');
-  // },
-
   getSharedUsersById(knex, thoughtId) {
     return knex
       .raw(

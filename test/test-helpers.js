@@ -50,7 +50,7 @@ function makeTopicsArray(users) {
       topic_content: "Content of the second test topic",
       level: 1,
       topic_owner: 1,
-    }
+    },
   ];
 }
 function makeThoughtsArray(users) {
@@ -60,7 +60,6 @@ function makeThoughtsArray(users) {
       thought_title: "My first thought",
       thought_content: "Content of my first thought",
       thought_owner: 1,
-      //level:1,
       thought_topic: 0,
     },
     {
@@ -68,7 +67,6 @@ function makeThoughtsArray(users) {
       thought_title: "My second thought",
       thought_content: "Content of my second thought",
       thought_owner: 1,
-      //level:1,
       thought_topic: 0,
     },
   ];
@@ -80,7 +78,7 @@ function makeCommentsArray() {
       id: 1,
       commenter_id: 1,
       comment_content: "Comment one on first thought",
-      thought_id: 2 , 
+      thought_id: 2,
     },
     {
       id: 2,
@@ -105,16 +103,17 @@ function makeCommentsArray() {
   ];
 }
 
-function makeExpectedComments( thoughtId, comments) {
-  const expectedComments = comments.filter(comment => comment.thought_id == thoughtId
+function makeExpectedComments(thoughtId, comments) {
+  const expectedComments = comments.filter(
+    (comment) => comment.thought_id == thoughtId
   );
 
-  return expectedComments.map(comment => {
+  return expectedComments.map((comment) => {
     return {
       id: comment.id,
       thought_id: comment.thought_id,
       commenter_id: comment.commenter_id,
-      comment_content: comment.comment_content
+      comment_content: comment.comment_content,
     };
   });
 }
@@ -135,12 +134,9 @@ function makeExpectedThought(users, thought) {
     thought_title: thought.thought_title,
     thought_content: thought.thought_content,
     thought_owner: thought.thought_owner,
-    //level:1,
     thought_topic: 0,
   };
 }
-
-
 
 function makeTopicsFixtures() {
   const testUsers = makeUsersArray();
@@ -157,13 +153,11 @@ function makeThoughtsFixtures() {
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
-  console.log("jwt user", user);
   const token = jwt.sign({ user_id: user.id }, secret, {
     subject: user.username,
     algorithm: "HS256",
     expiresIn: config.JWT_EXPIRY,
   });
-  console.log("token start", token, "token end");
   return `Bearer ${token}`;
 }
 
@@ -219,7 +213,6 @@ function cleanTables(db) {
  * @returns {Promise} - when users table seeded
  */
 function seedUsers(db, users) {
-  //console.log("users",users)
   const preppedUsers = users.map((user) => ({
     ...user,
     password: bcrypt.hashSync(user.password, 1),
@@ -235,7 +228,6 @@ function seedUsers(db, users) {
 
 function seedTopicTable(db, users, topics) {
   // use a transaction to group the queries and auto rollback on any failure
-  console.log("the topics", topics);
   return db.transaction(async (trx) => {
     await seedUsers(trx, users);
     await trx.into("topic").insert(topics);
@@ -257,7 +249,6 @@ function seedCommentsTable(db, comments) {
 
 function seedThoughtTable(db, users, thoughts) {
   // use a transaction to group the queries and auto rollback on any failure
-  console.log("the thoughts", thoughts);
   return db.transaction(async (trx) => {
     await seedUsers(trx, users);
     //await seedCommentsTable(trx,comments)
@@ -273,7 +264,6 @@ module.exports = {
   seedTopicTable,
   seedThoughtTable,
   seedCommentsTable,
-  //makeKnexInstance,
   makeUsersArray,
   makeCommentsArray,
   makeTopicsArray,

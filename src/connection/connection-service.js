@@ -1,8 +1,8 @@
-const ConnectionService= {
-
-  getAllConnections(knex,userId){
-    return knex.raw(
-      `SELECT
+const ConnectionService = {
+  getAllConnections(knex, userId) {
+    return knex
+      .raw(
+        `SELECT
         fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
     FROM
         fokul_users
@@ -13,43 +13,43 @@ const ConnectionService= {
         AND NOT (fokul_users.id = ${userId} )
         ;
     `
-    )
-      .then(result => {
+      )
+      .then((result) => {
         return result.rows;
       });
   },
 
-  getExistingConnections(knex, userId){
+  getExistingConnections(knex, userId) {
     return knex
-      .select('*')
-      .from('connections')
-      .where({sender_id: userId})
-      .orWhere({receiver_id : userId});
+      .select("*")
+      .from("connections")
+      .where({ sender_id: userId })
+      .orWhere({ receiver_id: userId });
   },
 
   insertConnection(knex, senderId, receiverId) {
     return knex
-      .into('connections')
-      .insert({sender_id: senderId, receiver_id: receiverId})  
-      .returning('*')
-      .then(rows => {
+      .into("connections")
+      .insert({ sender_id: senderId, receiver_id: receiverId })
+      .returning("*")
+      .then((rows) => {
         return rows[0];
       });
   },
 
-        
-  getNonConnections(knex,userId){
-    return knex.raw(
-      `select fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
+  getNonConnections(knex, userId) {
+    return knex
+      .raw(
+        `select fokul_users.id, fokul_users.first_name, fokul_users.last_name, fokul_users.username
       from fokul_users
       where fokul_users.id != ${userId}
       and not exists (select 1 from connections where (connections.sender_id = fokul_users.id and connections.receiver_id = ${userId})
       or (connections.sender_id = ${userId} and connections.receiver_id = fokul_users.id))`
-    )
-      .then(result => {
+      )
+      .then((result) => {
         return result.rows;
-      }); 
+      });
   },
 };
 
-module.exports= ConnectionService;
+module.exports = ConnectionService;

@@ -23,7 +23,7 @@ thoughtRouter
   .get(async (req, res, next) => {
     const knexInstance = req.app.get("db");
     const userId = req.user.id;
-    console.log("user id", req.user.id);
+
     try {
       const thoughts = await ThoughtService.getAllThoughts(
         knexInstance,
@@ -58,16 +58,13 @@ thoughtRouter
         newThought.thought_topic = thought_topic;
       }
 
-      console.log("thought user id", req.user.id);
       newThought.thought_owner = req.user.id;
 
-      console.log(newThought, "new thought");
       const createdThought = await ThoughtService.insertThought(
         knexInstance,
         newThought
       );
 
-      console.log("created thought", createdThought);
       res
         .status(201)
         .location(path.posix.join(req.originalUrl, `/${createdThought.id}`))
@@ -106,13 +103,11 @@ thoughtRouter
         knexInstance,
         Number(req.params.thoughtId)
       );
-      //console.log("topic", topic, "then", req.params.thoughtId, "req.params");
       if (!thought) {
         return res.status(404).json({
           error: { message: `This thought does not exist.` },
         });
       }
-      console.log(thought, "thought");
       res.json(thought);
     } catch (error) {
       console.log("get thought by Id error", error);
@@ -148,14 +143,12 @@ thoughtRouter
       if (date_modified) {
         newThoughtFields.date_modified = date_modified;
       }
-      console.log("newThoughtFields", newThoughtFields);
 
       const updatedThought = await ThoughtService.updateThought(
         knexInstance,
         req.params.thoughtId,
         newThoughtFields
       );
-      console.log("updated Thought", updatedThought);
       res.status(200).json(updatedThought);
     } catch (error) {
       console.log("patch thought error", error);
@@ -180,7 +173,6 @@ thoughtRouter
 thoughtRouter.route("/:thoughtId/level").get(async (req, res, next) => {
   const thoughtId = req.params.thoughtId;
   const knexInstance = req.app.get("db");
-  console.log(thoughtId, "thought id");
   const userId = Number(req.user.id);
   try {
     const level = await ThoughtService.getThoughtLevel(
@@ -189,7 +181,6 @@ thoughtRouter.route("/:thoughtId/level").get(async (req, res, next) => {
       userId
     );
 
-    console.log(level, "level from thought connections");
     if (!level) {
       return res.status(404).json({
         error: {
@@ -215,7 +206,6 @@ thoughtRouter
         knexInstance,
         thoughtId
       );
-      console.log(sharedUsers, "sharedUsers");
       res.json(sharedUsers);
     } catch (error) {
       console.log("get shared users for a thought by id error", error);
@@ -228,14 +218,7 @@ thoughtRouter
     try {
       const thoughtId = req.params.thoughtId;
       const owner_id = req.user.id;
-      console.log(thoughtId, "thought id in share");
       const { shared_userId, shared_level } = req.body;
-      console.log(
-        shared_userId,
-        "shared user id",
-        shared_level,
-        "shared level"
-      );
 
       const sharedThought = {
         owner_id: owner_id,
