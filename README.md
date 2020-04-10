@@ -7,6 +7,13 @@ Or the live product [here](https://folkul.now.sh/)
 ## What is Folkul? 
 - Fokul is a place where you can privately gather your thoughts - this can be small ideas to the next greatest invention. You can connect to other users and then share this idea with them - getting criticism, feedback and overall collaboration.
 
+## Technology being used 
+- Node
+- Express
+- Knex
+- PostgreSQL
+- Supertest
+
 ## Local dev setup 
 bash <br />
 mv example.env .env <br />
