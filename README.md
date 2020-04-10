@@ -1,5 +1,10 @@
 # Folkul API 
 
+## Team Members
+- Jordan Castillo
+- Scott Lingner
+- Kraig Williams 
+
 ## Client 
 Checkout Folkul's client repo [here](https://github.com/kraigwilliams/motive-client) 
 Or the live product [here](https://folkul.now.sh/)
