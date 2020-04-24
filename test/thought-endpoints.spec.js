@@ -71,27 +71,27 @@ describe("Thought Endpoints", function () {
       });
     });
 
-    context("Given there are comments for thought in the database", () => {
-      // before(()=>  helpers.seedUsers(db,testUsers))
+    // context("Given there are comments for thought in the database", () => {
+    //   // before(()=>  helpers.seedUsers(db,testUsers))
 
-      beforeEach("insert thoughts", () =>
-        helpers.seedThoughtTable(db, testUsers, testThoughts)
-      );
-      beforeEach("insert comments", () => {
-        return helpers.seedCommentsTable(db, testComments);
-      });
+    //   beforeEach("insert thoughts", () =>
+    //     helpers.seedThoughtTable(db, testUsers, testThoughts)
+    //   );
+    //   beforeEach("insert comments", () => {
+    //     return helpers.seedCommentsTable(db, testComments);
+    //   });
 
-      it("responds with 200 and the specified comments", () => {
-        const thoughtId = 1;
-        const expectedComments = helpers.makeExpectedComments(
-          thoughtId,
-          testComments
-        );
-        return supertest(app)
-          .get(`/api/thought/1`)
-          .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
-          .expect(200, expectedComments);
-      });
-    });
+    //   it("responds with 200 and the specified comments", () => {
+    //     const thoughtId = 1;
+    //     const expectedComments = helpers.makeExpectedComments(
+    //       thoughtId,
+    //       testComments
+    //     );
+    //     return supertest(app)
+    //       .get(`/api/thought/1`)
+    //       .set("Authorization", helpers.makeAuthHeader(testUsers[0]))
+    //       .expect(200, expectedComments);
+    //   });
+    // });
   });
 });

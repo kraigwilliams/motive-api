@@ -74,7 +74,7 @@ describe("Auth Endpoints", function () {
         password: testUser.password,
       };
       const expectedToken = jwt.sign(
-        { user_id: testUser.id, name: testUser.name },
+        { user_id: testUser.id,, name: testUser.username },
         process.env.JWT_SECRET,
         {
           subject: testUser.username,
